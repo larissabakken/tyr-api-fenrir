@@ -15,6 +15,7 @@ model User {
   email        String       @unique
   name         String?
   password     String
+  cpf          String       @unique
   permission  Permission[]
 
   createdAt    DateTime     @default(now())
