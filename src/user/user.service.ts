@@ -6,10 +6,22 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({
+  async create(createUserDto: CreateUserDto) {
+    const defaultPermission = createUserDto.permission;
+
+    if (!defaultPermission || defaultPermission === '') {
+      createUserDto.permission = 'user';
+    }
+
+    if (defaultPermission !== 'admin' && defaultPermission !== 'user') {
+      createUserDto.permission = 'user';
+    }
+
+    const newUser = await this.prisma.user.create({
       data: createUserDto,
     });
+
+    return newUser;
   }
 
   async findAll() {
