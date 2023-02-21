@@ -11,25 +11,15 @@ datasource db {
 }
 
 model User {
-  id           String       @id @default(uuid())
-  email        String       @unique
-  name         String?
-  password     String
-  cpf          String       @unique
-  permission  Permission[]
+  id         String @id @default(uuid())
+  email      String @unique
+  name       String
+  password   String
+  cpf        String @unique
+  permission String
 
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("user")
-}
-
-model Permission {
-  id    String @id @default(uuid())
-  description  String
-  user  User   @relation(fields: [userId], references: [id])
-  userId String
-  @@map("permission")
-  
 }
