@@ -9,11 +9,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const defaultPermission = createUserDto.permission;
 
-    if (!defaultPermission || defaultPermission === '') {
-      createUserDto.permission = 'user';
-    }
-
-    if (defaultPermission !== 'admin' && defaultPermission !== 'user') {
+    if (!defaultPermission || defaultPermission === '' || (defaultPermission !== 'admin' && defaultPermission !== 'user')) {
       createUserDto.permission = 'user';
     }
 
