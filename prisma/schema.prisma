@@ -22,7 +22,7 @@ model User {
   updatedAt    DateTime     @updatedAt
 
 
-  @@map("users")
+  @@map("user")
 }
 
 model Permission {
@@ -30,5 +30,6 @@ model Permission {
   description  String
   user  User   @relation(fields: [userId], references: [id])
   userId String
-  @@map("permissions")
+  @@map("permission")
+  
 }
