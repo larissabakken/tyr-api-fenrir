@@ -18,18 +18,18 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findById(@Param('id') id: string) {
     return this.userService.findById(id);
   }
 
   @Get('email/:email')
-  findOneByEmail(@Param('email') email: string) {
-    return this.userService.findOneByEmail(email);
+  findByEmail(@Param('email') email: string) {
+    return this.userService.findByEmail(email);
   }
 
   @Get('cpf/:cpf')
-  findOneByCpf(@Param('cpf') cpf: string) {
-    return this.userService.findOneByCpf(cpf);
+  findByCpf(@Param('cpf') cpf: string) {
+    return this.userService.findByCpf(cpf);
   }
 
   @Patch(':id')

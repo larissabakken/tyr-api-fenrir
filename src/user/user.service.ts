@@ -21,8 +21,8 @@ export class UserService {
     }
 
     const data: Prisma.UserCreateInput = {
-      password: bcrypt.hash(createUserDto.password, 10),
       ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 10),
     };
 
     const createdUser = await this.prisma.user.create({ data });
@@ -37,41 +37,16 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
-  async findById(id: string) {
-    const data = await this.prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    return {
-      ...data,
-      password: undefined,
-    };
+  findById(id: string) {
+    return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async findOneByEmail(email: string) {
-    const data = await this.prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    return {
-      ...data,
-      password: undefined,
-    };
+  findByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async findOneByCpf(cpf: string) {
-    const data = await this.prisma.user.findUnique({
-      where: {
-        cpf: cpf,
-      },
-    });
-    return {
-      ...data,
-      password: undefined,
-    };
+  async findByCpf(cpf: string) {
+    return await this.prisma.user.findUnique({ where: { cpf } });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
