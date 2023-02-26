@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,10 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
 }
 
 model User {
@@ -22,4 +23,179 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@map("user")
+}
+
+model Driver {
+  id       String @id @default(uuid())
+  FullName String
+  cpf_cnpj String @unique
+  email    String @unique
+  phone    Int
+  address  String
+
+  trucks   DriverTruck[]
+  vehicles DriverVehicle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("driver")
+}
+
+model Owner {
+  id       String @id @default(uuid())
+  FullName String
+  cpf_cnpj String @unique
+  email    String @unique
+  phone    Int
+  address  String
+
+  trucks   OwnerTruck[]
+  vehicles OwnerVehicle[]
+  carts    OwnerCart[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("owner")
+}
+
+model Truck {
+  id           String @id @default(uuid())
+  description  String
+  licensePlate String @unique
+  chassis      String @unique
+  renavam      String @unique
+
+  typeOfTruck       String
+  model             String
+  color             String
+  yearOfManufacture Int
+  typeOfCart        String
+  numberOfAxles     Int
+
+  drivers DriverTruck[]
+  owners  OwnerTruck[]
+  carts   Cart[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("truck")
+}
+
+model Cart {
+  id           String @id @default(uuid())
+  description  String
+  licensePlate String @unique
+  chassis      String @unique
+  renavam      String @unique
+
+  model             String
+  manufacturer      String
+  numberOfAxles     Int
+  yearOfManufacture Int
+  typeOfCart        String
+
+  owners OwnerCart[]
+
+  idTruck String
+  truck   Truck  @relation(fields: [idTruck], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cart")
+}
+
+model Vehicle {
+  id           String @id @default(uuid())
+  description  String
+  licensePlate String @unique
+  chassis      String @unique
+  renavam      String @unique
+
+  model             String
+  color             String
+  manufacturer      String
+  yearOfManufacture Int
+  typeOfVehicle     String
+
+  drivers DriverVehicle[]
+  owners  OwnerVehicle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("vehicle")
+}
+
+model DriverTruck {
+  id       String @id @default(uuid())
+  driverId String
+  truckId  String
+
+  driver Driver @relation(fields: [driverId], references: [id])
+  truck  Truck  @relation(fields: [truckId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("driver_truck")
+}
+
+model DriverVehicle {
+  id        String @id @default(uuid())
+  driverId  String
+  vehicleId String
+
+  driver  Driver  @relation(fields: [driverId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("driver_vehicle")
+}
+
+model OwnerTruck {
+  id      String @id @default(uuid())
+  ownerId String
+  truckId String
+
+  Truck Truck @relation(fields: [truckId], references: [id])
+  Owner Owner @relation(fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("owner_truck")
+}
+
+model OwnerCart {
+  id      String @id @default(uuid())
+  ownerId String
+  cartId  String
+
+  Cart  Cart  @relation(fields: [cartId], references: [id])
+  Owner Owner @relation(fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("owner_cart")
+}
+
+model OwnerVehicle {
+  id        String @id @default(uuid())
+  ownerId   String
+  vehicleId String
+
+  Vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  Owner   Owner   @relation(fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("owner_vehicle")
 }

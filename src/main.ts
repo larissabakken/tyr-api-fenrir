@@ -1,11 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';
+import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';import { PrismaClient } from '@prisma/client'
+
+
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const prisma = new PrismaClient();
 
   // Pipes
   app.useGlobalPipes(
