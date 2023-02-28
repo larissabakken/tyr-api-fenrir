@@ -26,15 +26,15 @@ model User {
 }
 
 model Driver {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   FullName String
-  cpf_cnpj String @unique
-  email    String @unique
+  cpf_cnpj String  @unique
+  email    String  @unique
   phone    Int
   address  String
+  status   Boolean
 
-  trucks   DriverTruck[]
-  vehicles DriverVehicle[]
+  shippings Shipping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,9 +50,9 @@ model Owner {
   phone    Int
   address  String
 
-  trucks   OwnerTruck[]
-  vehicles OwnerVehicle[]
-  carts    OwnerCart[]
+  trucks   Truck[]   @relation("OwnerToTruck")
+  vehicles Vehicle[] @relation("OwnerToVehicle")
+  carts    Cart[]    @relation("OwnerToCart")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -61,11 +61,13 @@ model Owner {
 }
 
 model Truck {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   description  String
-  licensePlate String @unique
-  chassis      String @unique
-  renavam      String @unique
+  price        Float
+  licensePlate String  @unique
+  chassis      String  @unique
+  renavam      String  @unique
+  status       Boolean
 
   typeOfTruck       String
   model             String
@@ -74,9 +76,9 @@ model Truck {
   typeOfCart        String
   numberOfAxles     Int
 
-  drivers DriverTruck[]
-  owners  OwnerTruck[]
-  carts   Cart[]
+  ownerId   String
+  owner     Owner      @relation("OwnerToTruck", fields: [ownerId], references: [id])
+  shippings Shipping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -85,11 +87,13 @@ model Truck {
 }
 
 model Cart {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   description  String
-  licensePlate String @unique
-  chassis      String @unique
-  renavam      String @unique
+  price        Float
+  status       Boolean
+  licensePlate String  @unique
+  chassis      String  @unique
+  renavam      String  @unique
 
   model             String
   manufacturer      String
@@ -97,10 +101,9 @@ model Cart {
   yearOfManufacture Int
   typeOfCart        String
 
-  owners OwnerCart[]
-
-  idTruck String
-  truck   Truck  @relation(fields: [idTruck], references: [id])
+  ownerId       String
+  owner         Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
+  cartsShipping CartsShipping[] @relation("CartsShippingToCart")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -111,6 +114,7 @@ model Cart {
 model Vehicle {
   id           String @id @default(uuid())
   description  String
+  image        String
   licensePlate String @unique
   chassis      String @unique
   renavam      String @unique
@@ -121,8 +125,9 @@ model Vehicle {
   yearOfManufacture Int
   typeOfVehicle     String
 
-  drivers DriverVehicle[]
-  owners  OwnerVehicle[]
+  ownerId          String
+  owner            Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
+  vehicleaShipping VehiclesShipping[] @relation("VehiclesShippingToVehicle")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -130,72 +135,68 @@ model Vehicle {
   @@map("vehicle")
 }
 
-model DriverTruck {
+model Customers {
   id       String @id @default(uuid())
-  driverId String
-  truckId  String
+  name     String
+  cpf_cnpj String @unique
+  email    String @unique
+  phone    Int
+  address  String
 
-  driver Driver @relation(fields: [driverId], references: [id])
-  truck  Truck  @relation(fields: [truckId], references: [id])
+  shippings Shipping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("driver_truck")
+  @@map("customers")
 }
 
-model DriverVehicle {
-  id        String @id @default(uuid())
-  driverId  String
-  vehicleId String
+model Shipping {
+  id               String            @id @default(uuid())
+  from             String
+  to               String
+  totalCost        Float
+  status           String
+  driverId         String
+  truckId          String
+  customerId       String
+  vehiclesShipping VehiclesShipping?
+  cartsShipping    CartsShipping?
 
-  driver  Driver  @relation(fields: [driverId], references: [id])
-  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  truck    Truck     @relation(fields: [truckId], references: [id])
+  driver   Driver    @relation(fields: [driverId], references: [id])
+  customer Customers @relation(fields: [customerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("driver_vehicle")
+  @@map("shipping")
 }
 
-model OwnerTruck {
-  id      String @id @default(uuid())
-  ownerId String
-  truckId String
+model VehiclesShipping {
+  id         String @id @default(uuid())
+  shippingId String @unique
 
-  Truck Truck @relation(fields: [truckId], references: [id])
-  Owner Owner @relation(fields: [ownerId], references: [id])
+  shipping Shipping @relation(fields: [shippingId], references: [id])
+
+  vehicles Vehicle[] @relation("VehiclesShippingToVehicle")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("owner_truck")
+  @@map("vehicle_shipping")
 }
 
-model OwnerCart {
-  id      String @id @default(uuid())
-  ownerId String
-  cartId  String
+model CartsShipping {
+  id         String @id @default(uuid())
+  shippingId String @unique
 
-  Cart  Cart  @relation(fields: [cartId], references: [id])
-  Owner Owner @relation(fields: [ownerId], references: [id])
+  shipping Shipping @relation(fields: [shippingId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("owner_cart")
-}
-
-model OwnerVehicle {
-  id        String @id @default(uuid())
-  ownerId   String
-  vehicleId String
-
-  Vehicle Vehicle @relation(fields: [vehicleId], references: [id])
-  Owner   Owner   @relation(fields: [ownerId], references: [id])
+  carts Cart[] @relation("CartsShippingToCart")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("owner_vehicle")
+  @@map("cart_shipping")
 }
