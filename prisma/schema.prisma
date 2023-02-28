@@ -31,7 +31,7 @@ model Driver {
   cpf_cnpj String  @unique
   email    String  @unique
   phone    Int
-  address  String
+  address  String?
   status   Boolean
 
   shippings Shipping[]
@@ -43,12 +43,12 @@ model Driver {
 }
 
 model Owner {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   FullName String
-  cpf_cnpj String @unique
-  email    String @unique
-  phone    Int
-  address  String
+  cpf_cnpj String  @unique
+  email    String  @unique
+  phone    Int?
+  address  String?
 
   trucks   Truck[]   @relation("OwnerToTruck")
   vehicles Vehicle[] @relation("OwnerToVehicle")
@@ -62,18 +62,18 @@ model Owner {
 
 model Truck {
   id           String  @id @default(uuid())
-  description  String
+  description  String?
   price        Float
   licensePlate String  @unique
   chassis      String  @unique
   renavam      String  @unique
   status       Boolean
 
-  typeOfTruck       String
-  model             String
-  color             String
-  yearOfManufacture Int
-  typeOfCart        String
+  typeOfTruck       String?
+  model             String?
+  color             String?
+  yearOfManufacture Int?
+  typeOfCart        String?
   numberOfAxles     Int
 
   ownerId   String
@@ -88,22 +88,22 @@ model Truck {
 
 model Cart {
   id           String  @id @default(uuid())
-  description  String
+  description  String?
   price        Float
   status       Boolean
   licensePlate String  @unique
   chassis      String  @unique
   renavam      String  @unique
 
-  model             String
-  manufacturer      String
-  numberOfAxles     Int
-  yearOfManufacture Int
-  typeOfCart        String
+  model             String?
+  manufacturer      String?
+  numberOfAxles     Int?
+  yearOfManufacture Int?
+  typeOfCart        String?
 
-  ownerId       String
-  owner         Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
-  cartsShipping CartsShipping[] @relation("CartsShippingToCart")
+  ownerId   String
+  owner     Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
+  shippings CartsShipping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -112,22 +112,24 @@ model Cart {
 }
 
 model Vehicle {
-  id           String @id @default(uuid())
-  description  String
-  image        String
-  licensePlate String @unique
-  chassis      String @unique
-  renavam      String @unique
+  id           String  @id @default(uuid())
+  description  String?
+  image        String?
+  origin       String
+  destination  String
+  licensePlate String  @unique
+  chassis      String  @unique
+  renavam      String  @unique
 
-  model             String
-  color             String
-  manufacturer      String
-  yearOfManufacture Int
-  typeOfVehicle     String
+  model             String?
+  color             String?
+  manufacturer      String?
+  yearOfManufacture Int?
+  typeOfVehicle     String?
 
-  ownerId          String
-  owner            Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
-  vehicleaShipping VehiclesShipping[] @relation("VehiclesShippingToVehicle")
+  ownerId   String
+  owner     Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
+  shippings VehiclesShipping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -136,12 +138,12 @@ model Vehicle {
 }
 
 model Customers {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  cpf_cnpj String @unique
-  email    String @unique
+  cpf_cnpj String  @unique
+  email    String  @unique
   phone    Int
-  address  String
+  address  String?
 
   shippings Shipping[]
 
@@ -152,20 +154,20 @@ model Customers {
 }
 
 model Shipping {
-  id               String            @id @default(uuid())
-  from             String
-  to               String
-  totalCost        Float
-  status           String
-  driverId         String
-  truckId          String
-  customerId       String
-  vehiclesShipping VehiclesShipping?
-  cartsShipping    CartsShipping?
+  id        String @id @default(uuid())
+  from      String
+  to        String
+  totalCost Float
+  status    String
 
-  truck    Truck     @relation(fields: [truckId], references: [id])
-  driver   Driver    @relation(fields: [driverId], references: [id])
-  customer Customers @relation(fields: [customerId], references: [id])
+  driverId   String
+  truckId    String
+  customerId String
+  vehicles   VehiclesShipping[]
+  carts      CartsShipping[]
+  truck      Truck              @relation(fields: [truckId], references: [id])
+  driver     Driver             @relation(fields: [driverId], references: [id])
+  customer   Customers          @relation(fields: [customerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -174,29 +176,27 @@ model Shipping {
 }
 
 model VehiclesShipping {
-  id         String @id @default(uuid())
-  shippingId String @unique
-
-  shipping Shipping @relation(fields: [shippingId], references: [id])
-
-  vehicles Vehicle[] @relation("VehiclesShippingToVehicle")
+  id         String   @id @default(uuid())
+  shippingId String   @map("shipping_id")
+  shipping   Shipping @relation(fields: [shippingId], references: [id])
+  Vehicle    Vehicle? @relation(fields: [vehicleId], references: [id])
+  vehicleId  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("vehicle_shipping")
+  @@map("vehicles_shipping")
 }
 
 model CartsShipping {
-  id         String @id @default(uuid())
-  shippingId String @unique
-
-  shipping Shipping @relation(fields: [shippingId], references: [id])
-
-  carts Cart[] @relation("CartsShippingToCart")
+  id         String   @id @default(uuid())
+  shippingId String   @map("shipping_id")
+  shipping   Shipping @relation(fields: [shippingId], references: [id])
+  cartId     String?
+  Cart       Cart?    @relation(fields: [cartId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("cart_shipping")
+  @@map("carts_shipping")
 }
