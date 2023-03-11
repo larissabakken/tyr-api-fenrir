@@ -34,15 +34,27 @@ export class CustomersService {
     return await this.prisma.customers.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} customer`;
+  async findOne(id: string) {
+    if (!id) {
+      throw new Error('ID is required');
+    }
+   return await this.prisma.customers.findUnique({ where: { id } });
   }
 
-  update(id: string, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
+  async update(id: string, updateCustomerDto: UpdateCustomerDto) {
+    return await this.prisma.customers.update({
+      where: {
+        id: id,
+      },
+      data: updateCustomerDto,
+    });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} customer`;
+  async remove(id: string) {
+    return await this.prisma.customers.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

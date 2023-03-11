@@ -9,13 +9,13 @@ export class OwnerService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createOwnerDto: CreateOwnerDto) {
-    const isCpfCnpjValid = await this.prisma.owner.findUnique({
+    const isCpfCnpjExists = await this.prisma.owner.findUnique({
       where: {
         cpf_cnpj: createOwnerDto.cpf_cnpj,
       },
     });
 
-    if (isCpfCnpjValid) {
+    if (isCpfCnpjExists) {
       throw new Error('CPF/CNPJ already exists');
     }
 
