@@ -5,7 +5,8 @@ import {
   MaxLength,
   MinLength,
   Matches,
-  IsNumber
+  IsNumber,
+  IsOptional
 } from 'class-validator';
 import { Owner } from '../entities/owner.entity';
 
@@ -27,9 +28,11 @@ export class CreateOwnerDto implements Owner {
   @IsNotEmpty()
   email: string;
 
+  @IsOptional()
   @IsNumber()
   phone?: number;
 
+  @IsOptional()
   @IsString()
   address?: string;
 }

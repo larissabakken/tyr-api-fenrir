@@ -2,12 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { Public } from 'src/auth/public.decorator';
 
-@Controller('customers')
+@Public()	// This decorator is used to allow access to this controller without authentication
+@Controller('customer')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customersService.create(createCustomerDto);
   }
@@ -19,16 +21,16 @@ export class CustomersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.customersService.findOne(+id);
+    return this.customersService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
-    return this.customersService.update(+id, updateCustomerDto);
+    return this.customersService.update(id, updateCustomerDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.customersService.remove(+id);
+    return this.customersService.remove(id);
   }
 }
