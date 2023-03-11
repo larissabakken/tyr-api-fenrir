@@ -41,12 +41,20 @@ export class OwnerService {
     return await this.prisma.owner.findUnique({ where: { id } });
   }
 
-  async findByEmail(email: string) {
-    return await this.prisma.owner.findUnique({ where: { email } });
-  }
-
-  async findByCpfCnpj(cpf_cnpj: string) {
-    return await this.prisma.owner.findUnique({ where: { cpf_cnpj } });
+  async findOne(value: string) {
+    if (!value) {
+      throw new Error('Value is required');
+    }
+    let owner: any;
+    switch (true) {
+      case value.includes('@'): // assume it's an email
+        owner = await this.prisma.owner.findUnique({ where: { email: value } });
+        break;
+      default: // assume it's cpf_cnpj
+        owner = await this.prisma.owner.findUnique({ where: { cpf_cnpj: value } });
+        break;
+    }
+    return owner;
   }
 
   async update(id: string, updateOwnerDto: UpdateOwnerDto) {

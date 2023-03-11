@@ -34,13 +34,28 @@ export class CustomersService {
     return await this.prisma.customers.findMany();
   }
 
-  async findOne(id: string) {
+  async findById(id: string) {
     if (!id) {
       throw new Error('ID is required');
     }
-   return await this.prisma.customers.findUnique({ where: { id } });
+    return await this.prisma.customers.findUnique({ where: { id } });
   }
 
+  async findOne(value: string) {
+    if (!value) {
+      throw new Error('Value is required');
+    }
+    let customers: any;
+    switch (true) {
+      case value.includes('@'): // assume it's an email
+        customers = await this.prisma.customers.findUnique({ where: { email: value } });
+        break;
+      default: // assume it's cpf_cnpj
+        customers = await this.prisma.customers.findUnique({ where: { cpf_cnpj: value } });
+        break;
+    }
+    return customers;
+  }
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return await this.prisma.customers.update({
       where: {
