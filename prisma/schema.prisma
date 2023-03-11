@@ -46,7 +46,7 @@ model Owner {
   id       String  @id @default(uuid())
   FullName String
   cpf_cnpj String  @unique
-  email    String  @unique
+  email    String
   phone    Int?
   address  String?
 
