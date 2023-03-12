@@ -48,7 +48,7 @@ export class OwnerService {
     let owner: any;
     switch (true) {
       case value.includes('@'): // assume it's an email
-        owner = await this.prisma.owner.findUnique({ where: { email: value } });
+        owner = await this.prisma.owner.findMany({ where: { email: value } });
         break;
       default: // assume it's cpf_cnpj
         owner = await this.prisma.owner.findUnique({ where: { cpf_cnpj: value } });

@@ -48,7 +48,7 @@ export class CustomersService {
     let customers: any;
     switch (true) {
       case value.includes('@'): // assume it's an email
-        customers = await this.prisma.customers.findUnique({ where: { email: value } });
+        customers = await this.prisma.customers.findMany({ where: { email: value } });
         break;
       default: // assume it's cpf_cnpj
         customers = await this.prisma.customers.findUnique({ where: { cpf_cnpj: value } });
@@ -56,7 +56,7 @@ export class CustomersService {
     }
     return customers;
   }
-  
+
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return await this.prisma.customers.update({
       where: {

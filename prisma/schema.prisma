@@ -141,7 +141,7 @@ model Customers {
   id       String  @id @default(uuid())
   name     String
   cpf_cnpj String  @unique
-  email    String 
+  email    String
   phone    Int
   address  String?
 
