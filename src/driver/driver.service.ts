@@ -1,26 +1,70 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DriverService {
-  create(createDriverDto: CreateDriverDto) {
-    return 'This action adds a new driver';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createDriverDto: CreateDriverDto) {
+    const isCpfCnpjExists = await this.prisma.driver.findUnique({
+      where: {
+        cpf_cnpj: createDriverDto.cpf_cnpj,
+      },
+    });
+    
+    if (isCpfCnpjExists) {
+      throw new Error('CPF/CNPJ already exists');
+    }
+
+    const data: Prisma.DriverCreateInput = {
+      ...createDriverDto,
+    };
+
+    const createdDriver = await this.prisma.driver.create({ data });
+
+    return {
+      ...createdDriver,
+    };
   }
 
-  findAll() {
-    return `This action returns all driver`;
+  async findAll() {
+    return await this.prisma.driver.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} driver`;
+  async findById(id: string) {
+    if (!id) {
+      throw new Error('ID is required');
+    }
+    return await this.prisma.driver.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDriverDto: UpdateDriverDto) {
-    return `This action updates a #${id} driver`;
+  async findOne(value: string) {
+    if (!value) {
+      throw new Error('Value is required');
+    }
+    let driver: any;
+    switch (true) {
+      case value.includes('@'): // assume it's an email
+      driver = await this.prisma.driver.findUnique({ where: { email: value } });
+        break;
+      default: // assume it's cpf_cnpj
+      driver = await this.prisma.driver.findUnique({ where: { cpf_cnpj: value } });
+        break;
+    }
+    return driver;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} driver`;
+  async update(id: string, updateDriverDto: UpdateDriverDto) {
+    return await this.prisma.driver.update({
+      where: { id },
+      data: updateDriverDto,
+    });
+  }
+
+  async remove(id: string) {
+    return await this.prisma.driver.delete({ where: { id } });
   }
 }

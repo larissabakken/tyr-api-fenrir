@@ -56,6 +56,7 @@ export class CustomersService {
     }
     return customers;
   }
+  
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return await this.prisma.customers.update({
       where: {
