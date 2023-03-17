@@ -21,7 +21,7 @@ async function bootstrap() {
 
   // Interceptors
   app.useGlobalInterceptors(new UnauthorizedInterceptor());
-
+  app.enableCors();
   await app.listen(3030, () => {
     console.log('Server is running on port 3030');
   });
