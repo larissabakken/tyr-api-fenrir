@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TruckService } from './truck.service';
 import { CreateTruckDto } from './dto/create-truck.dto';
 import { UpdateTruckDto } from './dto/update-truck.dto';
+import { Public } from 'src/auth/public.decorator';
 
+@Public()// This decorator is used to allow access to this controller without authentication
 @Controller('truck')
 export class TruckController {
   constructor(private readonly truckService: TruckService) {}
 
-  @Post()
+  @Post('create')
+
   create(@Body() createTruckDto: CreateTruckDto) {
     return this.truckService.create(createTruckDto);
   }

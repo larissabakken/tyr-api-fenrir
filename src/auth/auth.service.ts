@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { UserPayload } from './model/UserPayload';
 import { UserToken } from './model/UserToken';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
+import { User } from '@prisma/client';
+import { UserService } from 'src/app/user/user.service';
 
 @Injectable()
 export class AuthService {

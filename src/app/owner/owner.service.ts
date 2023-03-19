@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, Owner } from '@prisma/client';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
 
@@ -34,14 +34,14 @@ export class OwnerService {
     return await this.prisma.owner.findMany();
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<Owner> {
     if (!id) {
       throw new Error('ID is required');
     }
     return await this.prisma.owner.findUnique({ where: { id } });
   }
 
-  async findOne(value: string) {
+  async findOne(value: string): Promise<Owner> {
     if (!value) {
       throw new Error('Value is required');
     }
