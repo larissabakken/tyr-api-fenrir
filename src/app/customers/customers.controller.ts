@@ -1,10 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Public } from 'src/auth/public.decorator';
 
-@Public()	// This decorator is used to allow access to this controller without authentication
+@Public() // This decorator is used to allow access to this controller without authentication
 @Controller('customer')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
@@ -15,22 +24,29 @@ export class CustomersController {
   }
 
   @Get()
-  findAll() {
-    return this.customersService.findAll();
+  async findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ): Promise<{ data: any[]; total: number }> {
+    const customers = await this.customersService.findAll(+page, +limit);
+    return customers;
   }
 
   @Get('id/:id')
   findById(@Param('id') id: string) {
     return this.customersService.findById(id);
   }
-  
+
   @Get(':value')
   findOne(@Param('value') value: string) {
     return this.customersService.findOne(value);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ) {
     return this.customersService.update(id, updateCustomerDto);
   }
 
