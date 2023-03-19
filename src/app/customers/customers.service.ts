@@ -14,7 +14,7 @@ export class CustomersService {
         cpf_cnpj: createCustomerDto.cpf_cnpj,
       },
     });
-    
+
     if (isCpfCnpjExists) {
       throw new Error('CPF/CNPJ already exists');
     }
@@ -30,8 +30,23 @@ export class CustomersService {
     };
   }
 
-  async findAll() {
-    return await this.prisma.customers.findMany();
+  async countAll(): Promise<number> {
+    const count = await this.prisma.customers.count();
+    return count;
+  }
+
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ data: any[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const customers = await this.prisma.customers.findMany({
+      skip: isNaN(skip) ? 0 : skip,
+      take: isNaN(take) ? 2 : take,
+    });
+    const total = await this.prisma.customers.count();
+    return { data: customers, total };
   }
 
   async findById(id: string) {
@@ -48,10 +63,14 @@ export class CustomersService {
     let customers: any;
     switch (true) {
       case value.includes('@'): // assume it's an email
-        customers = await this.prisma.customers.findMany({ where: { email: value } });
+        customers = await this.prisma.customers.findMany({
+          where: { email: value },
+        });
         break;
       default: // assume it's cpf_cnpj
-        customers = await this.prisma.customers.findUnique({ where: { cpf_cnpj: value } });
+        customers = await this.prisma.customers.findUnique({
+          where: { cpf_cnpj: value },
+        });
         break;
     }
     return customers;
