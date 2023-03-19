@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { map, mergeMap, takeWhile, tap } from 'rxjs/operators';
 
 // Services
-import { UserService } from '../user/user.service';
+
 
 // Models
 import { UserFromJwt } from './model/UserFromJwt';
@@ -18,6 +18,7 @@ import { AuthRequest } from './model/AuthRequest';
 
 // Decorators
 import { IS_PUBLIC_KEY } from './public.decorator';
+import { UserService } from 'src/app/user/user.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {

@@ -7,7 +7,6 @@ import {
   Validate,
 } from 'class-validator';
 import { Truck } from '../entities/truck.entity';
-import { OwnerExistsValidator } from 'src/validators/owner-exists.validator';
 
 export class CreateTruckDto implements Truck {
   @IsOptional()
@@ -59,6 +58,5 @@ export class CreateTruckDto implements Truck {
   numberOfAxles: number;
 
   @IsNotEmpty()
-  @Validate(OwnerExistsValidator)
   ownerId: string;
 }

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Query } from '@nestjs/common';
 import { OwnerService } from './owner.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
@@ -18,13 +10,18 @@ export class OwnerController {
   constructor(private readonly ownerService: OwnerService) {}
 
   @Post('/create')
+  @UsePipes(new ValidationPipe())
   create(@Body() createOwnerDto: CreateOwnerDto) {
     return this.ownerService.create(createOwnerDto);
   }
 
   @Get()
-  findAll() {
-    return this.ownerService.findAll();
+  async findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ): Promise<{ data: any[]; total: number }> {
+    const customers = await this.ownerService.findAll(+page, +limit);
+    return customers;
   }
 
   @Get('id/:id')
