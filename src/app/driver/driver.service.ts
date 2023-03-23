@@ -36,8 +36,18 @@ export class DriverService {
     };
   }
 
-  async findAll() {
-    return await this.prisma.driver.findMany();
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ data: any[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const customers = await this.prisma.driver.findMany({
+      skip: isNaN(skip) ? 0 : skip,
+      take: isNaN(take) ? 2 : take,
+    });
+    const total = await this.prisma.driver.count();
+    return { data: customers, total };
   }
 
   async findById(id: string) {
