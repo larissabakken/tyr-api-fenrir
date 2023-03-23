@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { Public } from 'src/auth/public.decorator';
 
+@Public() // This decorator is used to allow access to this controller without authentication
 @Controller('driver')
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
