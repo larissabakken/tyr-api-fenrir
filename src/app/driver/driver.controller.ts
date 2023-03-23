@@ -9,7 +9,7 @@ import { Public } from 'src/auth/public.decorator';
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
   }

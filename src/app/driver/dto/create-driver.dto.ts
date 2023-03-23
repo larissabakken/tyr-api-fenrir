@@ -23,5 +23,6 @@ export class CreateDriverDto implements Driver {
     address?: string;
 
     @IsBoolean()
+    @IsOptional()
     status: boolean;
 }
