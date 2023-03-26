@@ -2,45 +2,42 @@ import { Injectable } from '@nestjs/common';
 import { CreateTruckDto } from './dto/create-truck.dto';
 import { UpdateTruckDto } from './dto/update-truck.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
-import { OwnerService } from '../owner/owner.service';
-
 
 @Injectable()
 export class TruckService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly ownerService: OwnerService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createTruckDto: CreateTruckDto) {
-    const { ownerId, ...rest } = createTruckDto;
+    const { ownerId, ...truckData } = createTruckDto;
 
-    // Retrieve owner from database to ensure it exists
-    const owner = await this.ownerService.findById(ownerId);
+    const owner = await this.prisma.owner.findUnique({
+      where: { id: ownerId },
+    });
 
-    // Create new truck with provided data and owner
-    const newTruck = await this.prisma.truck.create({
+    if (!owner) {
+      throw new Error('Owner not found');
+    }
+
+    const truck = await this.prisma.truck.create({
       data: {
-        ...rest,
+        ...truckData,
         owner: {
           connect: { id: ownerId },
         },
       },
     });
-
-    return newTruck;
+    return truck;
   }
 
   async findAll() {
     return this.prisma.truck.findMany();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} truck`;
   }
 
-  update(id: number, updateTruckDto: UpdateTruckDto) {
+  update(id: string, updateTruckDto: UpdateTruckDto) {
     return `This action updates a #${id} truck`;
   }
 

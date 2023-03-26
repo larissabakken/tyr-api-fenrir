@@ -22,12 +22,12 @@ export class TruckController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.truckService.findOne(+id);
+    return this.truckService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTruckDto: UpdateTruckDto) {
-    return this.truckService.update(+id, updateTruckDto);
+    return this.truckService.update(id, updateTruckDto);
   }
 
   @Delete(':id')
