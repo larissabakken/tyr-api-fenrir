@@ -33,15 +33,42 @@ export class TruckService {
     return this.prisma.truck.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} truck`;
+  async findOne(id: string) {
+    const truck = await this.prisma.truck.findUnique({
+      where: { id },
+    });
+    return truck;
   }
 
-  update(id: string, updateTruckDto: UpdateTruckDto) {
-    return `This action updates a #${id} truck`;
+  async update(id: string, updateTruckDto: UpdateTruckDto) {
+    const { ownerId, ...truckData } = updateTruckDto;
+
+    const owner = await this.prisma.owner.findUnique({
+      where: { id: ownerId },
+    });
+
+    if (!owner) {
+      throw new Error('Owner not found');
+    }
+
+    const truck = await this.prisma.truck.update({
+      where: { id },
+      data: {
+        ...truckData,
+        owner: {
+          connect: { id: ownerId },
+        },
+      },
+    });
+
+    return truck;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} truck`;
+  async remove(id: string) {
+    const truck = await this.prisma.truck.delete({
+      where: { id },
+    });
+
+    return truck;
   }
 }
