@@ -2,12 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { Public } from 'src/auth/public.decorator';
 
+@Public() // This decorator is used to allow access to this controller without authentication
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createCartDto: CreateCartDto) {
     return this.cartService.create(createCartDto);
   }
@@ -19,16 +21,16 @@ export class CartController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
+    return this.cartService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
+    return this.cartService.update(id, updateCartDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
+    return this.cartService.remove(id);
   }
 }

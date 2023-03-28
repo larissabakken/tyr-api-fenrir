@@ -9,12 +9,18 @@ export class DriverService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createDriverDto: CreateDriverDto) {
+    const status = createDriverDto.status;
+
+    if (status !== true && status !== false && status !== null) {
+      createDriverDto.status = false;
+    }
+
     const isCpfCnpjExists = await this.prisma.driver.findUnique({
       where: {
         cpf_cnpj: createDriverDto.cpf_cnpj,
       },
     });
-    
+
     if (isCpfCnpjExists) {
       throw new Error('CPF/CNPJ already exists');
     }
@@ -30,8 +36,18 @@ export class DriverService {
     };
   }
 
-  async findAll() {
-    return await this.prisma.driver.findMany();
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ data: any[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const customers = await this.prisma.driver.findMany({
+      skip: isNaN(skip) ? 0 : skip,
+      take: isNaN(take) ? 2 : take,
+    });
+    const total = await this.prisma.driver.count();
+    return { data: customers, total };
   }
 
   async findById(id: string) {
@@ -48,10 +64,14 @@ export class DriverService {
     let driver: any;
     switch (true) {
       case value.includes('@'): // assume it's an email
-      driver = await this.prisma.driver.findUnique({ where: { email: value } });
+        driver = await this.prisma.driver.findUnique({
+          where: { email: value },
+        });
         break;
       default: // assume it's cpf_cnpj
-      driver = await this.prisma.driver.findUnique({ where: { cpf_cnpj: value } });
+        driver = await this.prisma.driver.findUnique({
+          where: { cpf_cnpj: value },
+        });
         break;
     }
     return driver;
