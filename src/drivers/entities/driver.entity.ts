@@ -5,10 +5,11 @@ export class Driver implements Prisma.DriverUncheckedCreateInput{
     name: string;
     cnpj?: string;
     cpf?: string;
-    email: string;
-    phone: number;
+    email?: string;
+    phone: string;
     status: boolean;
     address?: string;
+
     createdAt?: Date;
     updatedAt?: Date;
 }
