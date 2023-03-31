@@ -57,11 +57,13 @@ export class DriversService {
     return await this.prisma.driver.findUnique({ where: { id } });
   }
 
-  async findAllByValue( cpf:string, cnpj:string, email:string, name:string) {
+  async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
     if (!cpf && !cnpj && !email && !name) {
       throw new Error('CPF, CNPJ, EMAIL or NAME is required');
     }
-    return await this.prisma.driver.findMany({ where: { cpf, cnpj, email, name } });
+    return await this.prisma.driver.findMany({
+      where: { cpf, cnpj, email, name },
+    });
   }
 
   async update(id: string, updateDriverDto: UpdateDriverDto) {
