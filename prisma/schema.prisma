@@ -30,7 +30,7 @@ model Driver {
   name    String
   cpf     String? @unique
   cnpj    String? @unique
-  email   String
+  email   String?
   phone   String
   address String?
   status  Boolean
