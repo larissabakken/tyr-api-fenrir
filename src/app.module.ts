@@ -15,9 +15,10 @@ import { VehicleModule } from './app/vehicle/vehicle.module';
 import { CustomersModule } from './app/customers/customers.module';
 import { TruckModule } from './app/truck/truck.module';
 import { DriversModule } from './drivers/drivers.module';
+import { OwnersModule } from './owners/owners.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule, DriverModule, OwnerModule, CartModule, ShippingModule, VehicleModule, CustomersModule, TruckModule, DriversModule],
+  imports: [PrismaModule, UserModule, AuthModule, DriverModule, OwnerModule, CartModule, ShippingModule, VehicleModule, CustomersModule, TruckModule, DriversModule, OwnersModule],
   controllers: [AppController, AuthController],
   providers: [AppService, {
     provide: APP_GUARD,
