@@ -2,8 +2,9 @@ import { Prisma } from "@prisma/client";
 
 export class Driver implements Prisma.DriverUncheckedCreateInput{
     id?: string;
-    FullName: string;
-    cpf_cnpj: string;
+    name: string;
+    cnpj?: string;
+    cpf?: string;
     email: string;
     phone: number;
     status: boolean;
