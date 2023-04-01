@@ -6,6 +6,7 @@ import {
   IsString,
   ValidateIf,
 } from 'class-validator';
+import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
 import { Truck } from '../entities/truck.entity';
 
 export class CreateTruckDto implements Truck {
