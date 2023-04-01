@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Customer } from '../entities/customer.entity';
 
 export class CreateCustomerDto implements Customer{
@@ -10,7 +10,7 @@ export class CreateCustomerDto implements Customer{
     @IsNotEmpty()
     cpf_cnpj: string;
     
-    @IsString()
+    @IsEmail()
     @IsNotEmpty()
     email: string;
     

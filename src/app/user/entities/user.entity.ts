@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Permission, Prisma } from '@prisma/client';
 
 export class User implements Prisma.UserUncheckedCreateInput {
     id?: string;
@@ -6,7 +6,7 @@ export class User implements Prisma.UserUncheckedCreateInput {
     password: string;
     name: string;
     cpf: string;
-    permission: string;
+    permission?: Permission;
     createdAt?: Date;
     updatedAt?: Date;
 }

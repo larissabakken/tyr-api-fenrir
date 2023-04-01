@@ -10,16 +10,6 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const defaultPermission = createUserDto.permission;
-
-    if (
-      !defaultPermission ||
-      defaultPermission === '' ||
-      (defaultPermission !== 'admin' && defaultPermission !== 'user')
-    ) {
-      createUserDto.permission = 'user';
-    }
-
     const data: Prisma.UserCreateInput = {
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),
