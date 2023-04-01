@@ -37,7 +37,7 @@ export class OwnersController {
     return this.ownersService.findById(id);
   }
 
-  @Get('')
+  @Get('search')
   async findAllByValue(
     @Query('cpf') cpf: string,
     @Query('cnpj') cnpj: string,
