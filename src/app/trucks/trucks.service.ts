@@ -27,7 +27,7 @@ export class TrucksService {
       },
     });
 
-    return {truck, owner};
+    return {data: truck, owner};
   }
 
   async findAll(
