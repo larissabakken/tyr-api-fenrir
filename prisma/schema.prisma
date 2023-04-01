@@ -66,14 +66,14 @@ model Truck {
   id          String  @id @default(uuid())
   description String?
 
-  licensePlate String  @unique
-  chassis      String? @unique
-  renavam      String? @unique
-  status       Boolean
+  license_plate String  @unique
+  chassis       String? @unique
+  renavam       String? @unique
+  status        Boolean
 
   type_of_truck       String?
-  model             String?
-  color             String?
+  model               String?
+  color               String?
   year_of_manufacture Int?
   type_of_cart        String?
   number_of_axles     Int
@@ -89,15 +89,15 @@ model Truck {
 }
 
 model Cart {
-  id           String  @id @default(uuid())
-  description  String?
-  status       Boolean
+  id            String  @id @default(uuid())
+  description   String?
+  status        Boolean
   license_plate String  @unique
-  chassis      String? @unique
-  renavam      String? @unique
+  chassis       String? @unique
+  renavam       String? @unique
 
-  model             String?
-  manufacturer      String?
+  model               String?
+  manufacturer        String?
   number_of_axles     Int?
   year_of_manufacture Int?
   type_of_cart        String?
@@ -113,18 +113,18 @@ model Cart {
 }
 
 model Vehicle {
-  id           String  @id @default(uuid())
-  description  String?
-  price        Float?
-  origin       String
-  destination  String
+  id            String  @id @default(uuid())
+  description   String?
+  price         Float?
+  origin        String
+  destination   String
   license_plate String  @unique
-  chassis      String? @unique
-  renavam      String? @unique
+  chassis       String? @unique
+  renavam       String? @unique
 
-  model             String?
-  color             String?
-  manufacturer      String?
+  model               String?
+  color               String?
+  manufacturer        String?
   year_of_manufacture Int?
   type_of_vehicle     String?
 
@@ -195,7 +195,7 @@ model VehiclesShipping {
 model CartsShipping {
   id         String   @id @default(uuid())
   shippingId String   @map("shipping_id")
-  shipments   Shipping @relation(fields: [shippingId], references: [id])
+  shipments  Shipping @relation(fields: [shippingId], references: [id])
   cartId     String?
   Cart       Cart?    @relation(fields: [cartId], references: [id])
 
