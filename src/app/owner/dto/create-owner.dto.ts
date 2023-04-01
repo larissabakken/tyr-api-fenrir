@@ -11,12 +11,12 @@ import {
 import { Owner } from '../entities/owner.entity';
 
 export class CreateOwnerDto implements Owner {
-  @IsString()
+ @IsString()
   @MinLength(2)
   @MaxLength(100)
   FullName: string;
 
-  @IsString()
+  @IsStrin g()
   @MinLength(11)
   @MaxLength(11)
   @Matches(/^[0-9]+$/, {

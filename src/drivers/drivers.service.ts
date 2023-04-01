@@ -42,12 +42,12 @@ export class DriversService {
   ): Promise<{ data: any[]; total: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
-    const customers = await this.prisma.driver.findMany({
+    const drivers = await this.prisma.driver.findMany({
       skip: isNaN(skip) ? 0 : skip,
       take: isNaN(take) ? 2 : take,
     });
     const total = await this.prisma.driver.count();
-    return { data: customers, total };
+    return { data: drivers, total };
   }
 
   async findById(id: string) {
