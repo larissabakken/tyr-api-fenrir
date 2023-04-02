@@ -1,6 +1,4 @@
 import { Prisma, Status } from '@prisma/client';
-import { Vehicle } from 'src/app/vehicles/entities/vehicle.entity';
-import { Cart } from 'src/app/carts/entities/cart.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Shipment implements Prisma.ShipmentUncheckedCreateInput {
@@ -31,11 +29,9 @@ export class Shipment implements Prisma.ShipmentUncheckedCreateInput {
   @ApiProperty({ example: 'c0e6-4771-b945-e2e3151c21a2', required: true })
   truckId?: string;
 
-  @ApiProperty({ type: () => [Vehicle] })
-  vehicles?: Prisma.VehiclesShipmentUncheckedCreateNestedManyWithoutShipmentsInput;
+  vehicles?: string[];
 
-  @ApiProperty({ type: () => [Cart] })
-  carts?: Prisma.CartsShipmentUncheckedCreateNestedManyWithoutShipmentsInput;
+  carts?: string[];
 
   @ApiProperty({ example: '2021-01-01', readOnly: true })
   createdAt?: string | Date;

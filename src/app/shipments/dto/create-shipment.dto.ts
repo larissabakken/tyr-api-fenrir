@@ -44,9 +44,11 @@ export class CreateShipmentDto implements Shipment {
   @IsString()
   truckId: string;
 
-  vehicles?: Prisma.VehiclesShipmentUncheckedCreateNestedManyWithoutShipmentsInput;
+  @IsNotEmpty()
+  vehicles?: string[];
 
-  carts?: Prisma.CartsShipmentUncheckedCreateNestedManyWithoutShipmentsInput;
+  @IsNotEmpty()
+  carts?: string[];
 
   @IsOptional()
   createdAt?: string | Date;

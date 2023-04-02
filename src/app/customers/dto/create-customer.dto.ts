@@ -1,7 +1,6 @@
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   Matches,
@@ -17,6 +16,7 @@ export class CreateCustomerDto implements Customer {
   @MaxLength(100)
   name: string;
 
+  @IsOptional()
   @IsString()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
     message: 'CPF or CNPJ is required',
@@ -24,6 +24,7 @@ export class CreateCustomerDto implements Customer {
   @Matches(/^[0-9]{11}$/, { message: 'Invalid CPF' })
   cpf?: string;
 
+  @IsOptional()
   @IsString()
   @IsString()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
@@ -31,11 +32,13 @@ export class CreateCustomerDto implements Customer {
   })
   @Matches(/^[0-9]{14}$/, { message: 'Invalid CNPJ' })
   cnpj?: string;
+
+
   @IsEmail()
   @IsOptional()
   email: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   @Matches(/^[0-9]{8,15}$/, { message: 'Invalid phone number' })
   phone: string;

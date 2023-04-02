@@ -14,6 +14,7 @@ export class CreateDriverDto implements Driver {
   @IsNotEmpty()
   name: string;
 
+  @IsOptional()
   @IsString()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
     message: 'CPF or CNPJ is required',
@@ -21,6 +22,7 @@ export class CreateDriverDto implements Driver {
   @Matches(/^[0-9]{11}$/, { message: 'Invalid CPF' })
   cpf: string;
 
+  @IsOptional()
   @IsString()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
     message: 'CPF or CNPJ is required',
@@ -33,7 +35,7 @@ export class CreateDriverDto implements Driver {
   email: string;
 
   @IsString()
-  @Matches(/^[0-9]{10,11}$/, { message: 'Invalid phone number' })
+  @Matches(/^[0-9]{6,15}$/, { message: 'Invalid phone number' })
   phone: string;
 
   @IsOptional()

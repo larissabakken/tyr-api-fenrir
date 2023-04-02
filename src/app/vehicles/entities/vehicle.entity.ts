@@ -43,7 +43,7 @@ export class Vehicle implements Prisma.VehicleUncheckedCreateInput {
   year_of_manufacture?: number;
 
   @ApiProperty({ example: 'Toyota', required: false })
-  manufacture?: string;
+  manufacturer?: string;
 
   @ApiProperty({ example: 'Diesel', required: false })
   type_of_vehicle?: string;

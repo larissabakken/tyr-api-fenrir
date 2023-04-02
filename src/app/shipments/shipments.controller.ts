@@ -22,6 +22,7 @@ import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Public } from 'src/auth/public.decorator';
 import { Shipment } from './entities/shipment.entity';
+import { Cart } from '@prisma/client';
 
 @Public() // This decorator is used to allow access to this controller without authentication
 @ApiTags('shipments')
@@ -30,10 +31,29 @@ export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}
 
   @Post('create')
-  async create(@Body()createShipmentDto: CreateShipmentDto & { vehicles: { vehicleId: string }[], carts: { cartId: string }[] }): Promise<Shipment> {
-    return this.shipmentsService.create(createShipmentDto);
+  @ApiOperation({ summary: 'Create shipment' })
+  @ApiBody({
+    type: Shipment,
+    examples: { 'application/json': {} },
+    required: true,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The created record',
+    type: Shipment,
+  })
+  async create(
+    @Body()
+    createShipmentDto: CreateShipmentDto & {
+      vehicles: { vehicleId: string }[];
+      carts: { cartId: string }[];
+    },
+  ) {
+    const shipments = await this.shipmentsService.create(createShipmentDto);
+    return shipments;
   }
 
+  @Get()
   @ApiOperation({ summary: 'Find all shipments' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
@@ -45,7 +65,7 @@ export class ShipmentsController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number }>{
     const shipments = await this.shipmentsService.findAll(+page, +limit);
     return shipments;
   }

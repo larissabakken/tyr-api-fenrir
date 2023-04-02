@@ -139,10 +139,7 @@ export class CustomersController {
     description: 'The updated record',
     type: Customer,
   })
-  update(
-    @Param('id') id: string,
-    @Body() updateCustomerDto: UpdateCustomerDto,
-  ) {
+  update( @Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
     return this.customersService.update(id, updateCustomerDto);
   }
 

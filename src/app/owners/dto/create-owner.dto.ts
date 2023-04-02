@@ -16,13 +16,14 @@ export class CreateOwnerDto implements Owner {
   name: string;
 
   @IsString()
+  @IsOptional()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
     message: 'CPF or CNPJ is required',
   })
   @Matches(/^[0-9]{11}$/, { message: 'Invalid CPF' })
   cpf?: string;
 
-  @IsString()
+  @IsOptional()
   @IsString()
   @ValidateIf((obj) => !obj.cpf || !obj.cnpj, {
     message: 'CPF or CNPJ is required',

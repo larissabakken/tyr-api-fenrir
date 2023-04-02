@@ -60,27 +60,27 @@ export class OwnersController {
     return this.ownersService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
-  @ApiQuery({ name: 'cpf', required: false, type: String })
-  @ApiQuery({ name: 'cnpj', required: false, type: String })
-  @ApiQuery({ name: 'email', required: false, type: String })
-  @ApiQuery({ name: 'name', required: false, type: String })
-  @ApiResponse({ status: 200, description: 'The found record', type: Owner })
-  async findAllByValue(
-    @Query('cpf') cpf: string,
-    @Query('cnpj') cnpj: string,
-    @Query('email') email: string,
-    @Query('name') name: string,
-  ) {
-    const owners = await this.ownersService.findAllByValue(
-      cpf,
-      cnpj,
-      email,
-      name,
-    );
-    return owners;
-  }
+  // @Get('search')
+  // @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
+  // @ApiQuery({ name: 'cpf', required: false, type: String })
+  // @ApiQuery({ name: 'cnpj', required: false, type: String })
+  // @ApiQuery({ name: 'email', required: false, type: String })
+  // @ApiQuery({ name: 'name', required: false, type: String })
+  // @ApiResponse({ status: 200, description: 'The found record', type: Owner })
+  // async findAllByValue(
+  //   @Query('cpf') cpf: string,
+  //   @Query('cnpj') cnpj: string,
+  //   @Query('email') email: string,
+  //   @Query('name') name: string,
+  // ): Promise<{data: any[] }> {
+  //   const owners = await this.ownersService.findAllByValue(
+  //     cpf,
+  //     cnpj,
+  //     email,
+  //     name,
+  //   );
+  //   return owners;
+  // }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update owner by id' })

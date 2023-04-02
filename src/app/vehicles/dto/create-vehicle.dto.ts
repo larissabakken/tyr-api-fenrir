@@ -59,7 +59,7 @@ export class CreateVehicleDto implements Vehicle {
 
   @IsOptional()
   @IsString()
-  manufacture?: string;
+  manufacturer?: string;
 
   @IsOptional()
   @IsString()
@@ -68,4 +68,5 @@ export class CreateVehicleDto implements Vehicle {
   @IsNotEmpty()
   @IsString()
   ownerId: string;
+
 }

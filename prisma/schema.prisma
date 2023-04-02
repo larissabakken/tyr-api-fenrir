@@ -117,11 +117,10 @@ model Cart {
   type_of_cart        String?
 
   ownerId   String
-  owner     Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
-  shipments CartsShipment[]
+  owner     Owner      @relation("OwnerToCart", fields: [ownerId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   @@map("carts")
 }
@@ -143,11 +142,10 @@ model Vehicle {
   type_of_vehicle     String?
 
   ownerId   String
-  owner     Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
-  shipments VehiclesShipment[]
+  owner     Owner      @relation("OwnerToVehicle", fields: [ownerId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@map("vehicles")
 }
@@ -181,41 +179,15 @@ model Shipment {
   truckId    String?
   customerId String?
 
-  vehicles VehiclesShipment[]
-  carts    CartsShipment[]
+  vehicles String[]  @default([])
+  carts    String[]  @default([])  
 
   truck    Truck?     @relation(fields: [truckId], references: [id])
   driver   Driver?    @relation(fields: [driverId], references: [id])
   customer Customers? @relation(fields: [customerId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@map("shipments")
-}
-
-model VehiclesShipment {
-  id         String   @id @default(uuid())
-  shipmentId String   @map("shipment_id")
-  shipments   Shipment @relation(fields: [shipmentId], references: [id])
-  Vehicle    Vehicle? @relation(fields: [vehicleId], references: [id])
-  vehicleId  String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("vehicles_shipments")
-}
-
-model CartsShipment {
-  id         String   @id @default(uuid())
-  shipmentId String   @map("shipment_id")
-  shipments  Shipment @relation(fields: [shipmentId], references: [id])
-  cartId     String?
-  Cart       Cart?    @relation(fields: [cartId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("carts_shipments")
 }

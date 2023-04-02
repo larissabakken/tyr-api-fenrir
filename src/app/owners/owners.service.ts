@@ -51,14 +51,16 @@ export class OwnersService {
     return await this.prisma.owner.findUnique({ where: { id } });
   }
 
-  async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
-    if (!cpf && !cnpj && !email && !name) {
-      throw new Error('CPF, CNPJ, EMAIL or NAME is required');
-    }
-    return await this.prisma.owner.findMany({
-      where: { cpf, cnpj, email, name },
-    });
-  }
+  // async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
+  //   if (!cpf && !cnpj && !email && !name) {
+  //     throw new Error('CPF, CNPJ, EMAIL or NAME is required');
+  //   }
+  //   const owners = await this.prisma.owner.findMany({
+  //     where: { cpf, cnpj, email, name },
+  //   });
+
+  //   return { data: owners };
+  // }
 
   async update(id: string, updateOwnerDto: UpdateOwnerDto) {
     return await this.prisma.owner.update({
@@ -68,6 +70,6 @@ export class OwnersService {
   }
 
   async remove(id: string) {
-   return await this.prisma.owner.delete({ where: { id } });
+    return await this.prisma.owner.delete({ where: { id } });
   }
 }

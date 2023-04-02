@@ -62,9 +62,7 @@ export class CustomersService {
 
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return await this.prisma.customers.update({
-      where: {
-        id: id,
-      },
+      where: { id },
       data: updateCustomerDto,
     });
   }
