@@ -5,7 +5,7 @@ import { UserPayload } from './model/UserPayload';
 import { UserToken } from './model/UserToken';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { User } from '@prisma/client';
-import { UserService } from 'src/app/user/user.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   private async validateUser(email: string, password: string) {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userService.findOneByValue(email);
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (isPasswordValid) {

@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { OwnerService } from '../owner/owner.service';
-import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { OwnersService } from 'src/app/owners/owners.service';
+import {
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 @ValidatorConstraint({ name: 'ownerExists', async: true })
 @Injectable()
 export class OwnerExistsValidator implements ValidatorConstraintInterface {
-  constructor(private readonly ownerService: OwnerService) {}
+  constructor(private readonly ownerService: OwnersService) {}
 
   async validate(value: string) {
-    const owner = await this.ownerService.findById(value);
+    const owner = await this.ownerService.findOne(value);
 
     if (!owner) {
       return false;

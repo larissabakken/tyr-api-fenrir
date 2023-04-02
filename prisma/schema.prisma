@@ -11,44 +11,60 @@ generator erd {
   provider = "prisma-erd-generator"
 }
 
+enum Permission {
+  SUPERADMIN
+  ADMIN
+  USER
+  GUEST
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  FINISHED
+  CANCELED
+}
+
 model User {
-  id         String @id @default(uuid())
-  email      String @unique
+  id         String      @id @default(uuid())
+  email      String      @unique
   name       String
   password   String
-  cpf        String @unique
-  permission String
+  cpf        String      @unique
+  permission Permission? @default(USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("user")
+  @@map("users")
 }
 
 model Driver {
-  id       String  @id @default(uuid())
-  FullName String
-  cpf_cnpj String  @unique
-  email    String  @unique
-  phone    Int
-  address  String?
-  status   Boolean
+  id      String  @id @default(uuid())
+  name    String
+  cpf     String? @unique
+  cnpj    String? @unique
+  email   String?
+  phone   String
+  address String?
+  status  Boolean
 
-  shippings Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("driver")
+  @@map("drivers")
 }
 
 model Owner {
-  id       String  @id @default(uuid())
-  FullName String
-  cpf_cnpj String  @unique
-  email    String
-  phone    Int?
-  address  String?
+  id      String  @id @default(uuid())
+  name    String
+  cpf     String? @unique
+  cnpj    String? @unique
+  email   String?
+  phone   String?
+  address String?
 
   trucks   Truck[]   @relation("OwnerToTruck")
   vehicles Vehicle[] @relation("OwnerToVehicle")
@@ -57,95 +73,93 @@ model Owner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("owner")
+  @@map("owners")
 }
 
 model Truck {
-  id           String  @id @default(uuid())
-  description  String?
-  price        Float
-  licensePlate String  @unique
-  chassis      String  @unique
-  renavam      String  @unique
-  status       Boolean
+  id          String  @id @default(uuid())
+  description String?
 
-  typeOfTruck       String?
-  model             String?
-  color             String?
-  yearOfManufacture Int?
-  typeOfCart        String?
-  numberOfAxles     Int
+  license_plate String  @unique
+  chassis       String? @unique
+  renavam       String? @unique
+  status        Boolean
+
+  type_of_truck       String?
+  model               String?
+  color               String?
+  year_of_manufacture Int?
+  type_of_cart        String?
+  number_of_axles     Int
 
   ownerId   String
   owner     Owner      @relation("OwnerToTruck", fields: [ownerId], references: [id])
-  shippings Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("truck")
+  @@map("trucks")
 }
 
 model Cart {
-  id           String  @id @default(uuid())
-  description  String?
-  price        Float
-  status       Boolean
-  licensePlate String  @unique
-  chassis      String  @unique
-  renavam      String  @unique
+  id            String  @id @default(uuid())
+  description   String?
+  status        Boolean
+  license_plate String  @unique
+  chassis       String? @unique
+  renavam       String? @unique
 
-  model             String?
-  manufacturer      String?
-  numberOfAxles     Int?
-  yearOfManufacture Int?
-  typeOfCart        String?
+  model               String?
+  manufacturer        String?
+  number_of_axles     Int?
+  year_of_manufacture Int?
+  type_of_cart        String?
 
   ownerId   String
-  owner     Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
-  shippings CartsShipping[]
+  owner     Owner      @relation("OwnerToCart", fields: [ownerId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  @@map("cart")
+  @@map("carts")
 }
 
 model Vehicle {
-  id           String  @id @default(uuid())
-  description  String?
-  image        String?
-  origin       String
-  destination  String
-  licensePlate String  @unique
-  chassis      String  @unique
-  renavam      String  @unique
+  id            String  @id @default(uuid())
+  description   String?
+  price         Float?
+  origin        String
+  destination   String
+  license_plate String  @unique
+  chassis       String? @unique
+  renavam       String? @unique
 
-  model             String?
-  color             String?
-  manufacturer      String?
-  yearOfManufacture Int?
-  typeOfVehicle     String?
+  model               String?
+  color               String?
+  manufacturer        String?
+  year_of_manufacture Int?
+  type_of_vehicle     String?
 
   ownerId   String
-  owner     Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
-  shippings VehiclesShipping[]
+  owner     Owner      @relation("OwnerToVehicle", fields: [ownerId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
-  @@map("vehicle")
+  @@map("vehicles")
 }
 
 model Customers {
-  id       String  @id @default(uuid())
-  name     String
-  cpf_cnpj String  @unique
-  email    String
-  phone    Int
-  address  String?
+  id      String  @id @default(uuid())
+  name    String
+  cpf     String? @unique
+  cnpj    String? @unique
+  email   String?
+  phone   String
+  address String?
 
-  shippings Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -153,50 +167,27 @@ model Customers {
   @@map("customers")
 }
 
-model Shipping {
-  id        String @id @default(uuid())
-  from      String
-  to        String
-  totalCost Float
-  status    String
+model Shipment {
+  id                String  @id @default(uuid())
+  origin            String
+  final_destination String
+  status            Status
+  total_cost        Float?
+  description       String?
 
-  driverId   String
-  truckId    String
-  customerId String
-  vehicles   VehiclesShipping[]
-  carts      CartsShipping[]
-  truck      Truck              @relation(fields: [truckId], references: [id])
-  driver     Driver             @relation(fields: [driverId], references: [id])
-  customer   Customers          @relation(fields: [customerId], references: [id])
+  driverId   String?
+  truckId    String?
+  customerId String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  vehicles String[]  @default([])
+  carts    String[]  @default([])  
 
-  @@map("shipping")
-}
+  truck    Truck?     @relation(fields: [truckId], references: [id])
+  driver   Driver?    @relation(fields: [driverId], references: [id])
+  customer Customers? @relation(fields: [customerId], references: [id])
 
-model VehiclesShipping {
-  id         String   @id @default(uuid())
-  shippingId String   @map("shipping_id")
-  shipping   Shipping @relation(fields: [shippingId], references: [id])
-  Vehicle    Vehicle? @relation(fields: [vehicleId], references: [id])
-  vehicleId  String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("vehicles_shipping")
-}
-
-model CartsShipping {
-  id         String   @id @default(uuid())
-  shippingId String   @map("shipping_id")
-  shipping   Shipping @relation(fields: [shippingId], references: [id])
-  cartId     String?
-  Cart       Cart?    @relation(fields: [cartId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("carts_shipping")
+  @@map("shipments")
 }

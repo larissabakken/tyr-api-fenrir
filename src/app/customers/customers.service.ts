@@ -11,7 +11,7 @@ export class CustomersService {
   async create(createCustomerDto: CreateCustomerDto) {
     const isCpfCnpjExists = await this.prisma.customers.findUnique({
       where: {
-        cpf_cnpj: createCustomerDto.cpf_cnpj,
+        cpf: createCustomerDto.cpf || createCustomerDto.cnpj,
       },
     });
 
@@ -30,11 +30,6 @@ export class CustomersService {
     };
   }
 
-  async countAll(): Promise<number> {
-    const count = await this.prisma.customers.count();
-    return count;
-  }
-
   async findAll(
     page: number,
     limit: number,
@@ -49,38 +44,25 @@ export class CustomersService {
     return { data: customers, total };
   }
 
-  async findById(id: string) {
+  async findOne(id: string) {
     if (!id) {
       throw new Error('ID is required');
     }
     return await this.prisma.customers.findUnique({ where: { id } });
   }
 
-  async findOne(value: string) {
-    if (!value) {
-      throw new Error('Value is required');
+  async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
+    if (!cpf && !cnpj && !email && !name) {
+      throw new Error('CPF, CNPJ, EMAIL or NAME is required');
     }
-    let customers: any;
-    switch (true) {
-      case value.includes('@'): // assume it's an email
-        customers = await this.prisma.customers.findMany({
-          where: { email: value },
-        });
-        break;
-      default: // assume it's cpf_cnpj
-        customers = await this.prisma.customers.findUnique({
-          where: { cpf_cnpj: value },
-        });
-        break;
-    }
-    return customers;
+    return await this.prisma.customers.findMany({
+      where: { cpf, cnpj, email, name },
+    });
   }
 
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return await this.prisma.customers.update({
-      where: {
-        id: id,
-      },
+      where: { id },
       data: updateCustomerDto,
     });
   }

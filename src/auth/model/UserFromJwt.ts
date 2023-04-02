@@ -1,4 +1,4 @@
-import { User } from "src/app/user/entities/user.entity";
+import { User } from "src/app/users/entities/user.entity";
 
 
 export type UserFromJwt = Partial<User>;
