@@ -43,6 +43,10 @@ export class CreateCartDto implements Cart {
 
   @IsOptional()
   @IsString()
+  manufacturer?: string;
+
+  @IsOptional()
+  @IsString()
   type_of_cart?: string;
 
   @IsNotEmpty()

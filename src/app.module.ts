@@ -3,10 +3,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
-import { AppController } from './app.controller';
 import { AuthController } from './auth/auth.controller';
-
-import { AppService } from './app.service';
 
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './app/users/user.module';
@@ -32,9 +29,8 @@ import { DriversModule } from './app/drivers/drivers.module';
     TrucksModule,
     DriversModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AuthController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
