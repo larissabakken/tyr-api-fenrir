@@ -33,12 +33,11 @@ export class UserController {
   }
 
   @Get('search')
-  async findAllByValue(
-    @Query('cpf') cpf: string,
+  async findOneByValue(
     @Query('email') email: string,
   ) {
-    const users = await this.userService.findAllByValue(cpf, email);
-    return users;
+    const user = await this.userService.findOneByValue(email);
+    return user;
   }
 
   @Patch(':id')

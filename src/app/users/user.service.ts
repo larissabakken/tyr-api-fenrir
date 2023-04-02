@@ -31,10 +31,10 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async findAllByValue(cpf: string, email: string) {
-    if (!cpf && !email) throw new Error('CPF or EMAIL is required');
-    const users = await this.prisma.user.findMany({
-      where: { cpf, email },
+  async findOneByValue(email: string) {
+    if (!email) throw new Error('EMAIL is required');
+    const users = await this.prisma.user.findUnique({
+      where: { email },
     });
     return users;
   }
