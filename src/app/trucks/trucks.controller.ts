@@ -32,6 +32,11 @@ export class TrucksController {
     return trucks;
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.trucksService.findOne(id);
+  }
+
   @Get('search')
   async findAllByValue(
     @Query('license_plate') license_plate: string,

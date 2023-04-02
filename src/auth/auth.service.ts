@@ -5,7 +5,7 @@ import { UserPayload } from './model/UserPayload';
 import { UserToken } from './model/UserToken';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { User } from '@prisma/client';
-import { UserService } from 'src/app/user/user.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Injectable()
 export class AuthService {

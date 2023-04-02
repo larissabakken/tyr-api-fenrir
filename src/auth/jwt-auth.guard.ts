@@ -18,7 +18,7 @@ import { AuthRequest } from './model/AuthRequest';
 
 // Decorators
 import { IS_PUBLIC_KEY } from './public.decorator';
-import { UserService } from 'src/app/user/user.service';
+import { UserService } from 'src/app/users/user.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
