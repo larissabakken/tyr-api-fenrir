@@ -32,14 +32,25 @@ export class CustomersController {
     return customers;
   }
 
-  @Get('id/:id')
+  @Get(':id')
   findById(@Param('id') id: string) {
     return this.customersService.findById(id);
   }
 
-  @Get(':value')
-  findOne(@Param('value') value: string) {
-    return this.customersService.findOne(value);
+  @Get('search')
+  async findAllByValue(
+    @Query('cpf') cpf: string,
+    @Query('cnpj') cnpj: string,
+    @Query('email') email: string,
+    @Query('name') name: string,
+  ) {
+    const customers = await this.customersService.findAllByValue(
+      cpf,
+      cnpj,
+      email,
+      name,
+    );
+    return customers;
   }
 
   @Patch(':id')
