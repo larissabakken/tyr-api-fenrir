@@ -14,7 +14,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Public } from 'src/auth/public.decorator';
 
 @Public() // This decorator is used to allow access to this controller without authentication
-@Controller('customer')
+@Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
@@ -33,8 +33,8 @@ export class CustomersController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.customersService.findById(id);
+  findOne(@Param('id') id: string) {
+    return this.customersService.findOne(id);
   }
 
   @Get('search')

@@ -11,7 +11,7 @@ export class OwnerExistsValidator implements ValidatorConstraintInterface {
   constructor(private readonly ownerService: OwnersService) {}
 
   async validate(value: string) {
-    const owner = await this.ownerService.findById(value);
+    const owner = await this.ownerService.findOne(value);
 
     if (!owner) {
       return false;

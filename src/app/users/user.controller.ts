@@ -1,14 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from 'src/auth/public.decorator';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -19,18 +28,17 @@ export class UserController {
   }
 
   @Get(':id')
-  findByIdE(@Param('id') id: string) {
-    return this.userService.findById(id);
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(id);
   }
 
-  @Get('email/:email')
-  findByEmail(@Param('email') email: string) {
-    return this.userService.findByEmail(email);
-  }
-
-  @Get('cpf/:cpf')
-  findByCpf(@Param('cpf') cpf: string) {
-    return this.userService.findByCpf(cpf);
+  @Get('search')
+  async findAllByValue(
+    @Query('cpf') cpf: string,
+    @Query('email') email: string,
+  ) {
+    const users = await this.userService.findAllByValue(cpf, email);
+    return users;
   }
 
   @Patch(':id')

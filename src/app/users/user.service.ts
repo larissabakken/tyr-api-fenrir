@@ -27,16 +27,16 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
-  findById(id: string) {
+  async findOne(id: string) {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
-  }
-
-  async findByCpf(cpf: string) {
-    return await this.prisma.user.findUnique({ where: { cpf } });
+  async findAllByValue(cpf: string, email: string) {
+    if (!cpf && !email) throw new Error('CPF or EMAIL is required');
+    const users = await this.prisma.user.findMany({
+      where: { cpf, email },
+    });
+    return users;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

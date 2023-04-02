@@ -50,7 +50,7 @@ export class DriversService {
     return { data: drivers, total };
   }
 
-  async findById(id: string) {
+  async findOne(id: string) {
     if (!id) {
       throw new Error('ID is required');
     }

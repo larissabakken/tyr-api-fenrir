@@ -33,8 +33,8 @@ export class OwnersController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.ownersService.findById(id);
+  findOne(@Param('id') id: string) {
+    return this.ownersService.findOne(id);
   }
 
   @Get('search')
