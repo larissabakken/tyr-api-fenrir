@@ -96,7 +96,6 @@ export class ShipmentsService {
             const cart = await this.prisma.cart.findUnique({
               where: { id: cartId },
             });
-            console.log(cart);
             return cart;
           }),
         );
@@ -106,7 +105,6 @@ export class ShipmentsService {
             const vehicle = await this.prisma.vehicle.findUnique({
               where: { id: vehicleId },
             });
-            console.log(vehicle);
             return vehicle;
           }),
         );
