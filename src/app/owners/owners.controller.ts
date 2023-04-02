@@ -16,7 +16,6 @@ import {
   ApiTags,
   ApiQuery,
 } from '@nestjs/swagger';
-
 import { OwnersService } from './owners.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';

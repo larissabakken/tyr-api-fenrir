@@ -32,6 +32,7 @@ export class CreateUserDto implements User {
   password: string;
 
   @IsOptional()
+  @IsEnum(Permission)
   permission: Permission;
 
 }

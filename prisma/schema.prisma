@@ -18,12 +18,19 @@ enum Permission {
   GUEST
 }
 
+enum Status {
+  PENDING
+  IN_PROGRESS
+  FINISHED
+  CANCELED
+}
+
 model User {
-  id         String @id @default(uuid())
-  email      String @unique
+  id         String      @id @default(uuid())
+  email      String      @unique
   name       String
   password   String
-  cpf        String @unique
+  cpf        String      @unique
   permission Permission? @default(USER)
 
   createdAt DateTime @default(now())
@@ -42,7 +49,7 @@ model Driver {
   address String?
   status  Boolean
 
-  shipments Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,7 +94,7 @@ model Truck {
 
   ownerId   String
   owner     Owner      @relation("OwnerToTruck", fields: [ownerId], references: [id])
-  shipments Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -111,7 +118,7 @@ model Cart {
 
   ownerId   String
   owner     Owner           @relation("OwnerToCart", fields: [ownerId], references: [id])
-  shipments CartsShipping[]
+  shipments CartsShipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,7 +144,7 @@ model Vehicle {
 
   ownerId   String
   owner     Owner              @relation("OwnerToVehicle", fields: [ownerId], references: [id])
-  shipments VehiclesShipping[]
+  shipments VehiclesShipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -154,7 +161,7 @@ model Customers {
   phone   String
   address String?
 
-  shipments Shipping[]
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -162,19 +169,20 @@ model Customers {
   @@map("customers")
 }
 
-model Shipping {
-  id                String @id @default(uuid())
+model Shipment {
+  id                String  @id @default(uuid())
   origin            String
   final_destination String
-  totalCost         Float?
-  status            String
+  status            Status
+  total_cost        Float?
+  description       String?
 
   driverId   String?
   truckId    String?
   customerId String?
 
-  vehicles VehiclesShipping[]
-  carts    CartsShipping[]
+  vehicles VehiclesShipment[]
+  carts    CartsShipment[]
 
   truck    Truck?     @relation(fields: [truckId], references: [id])
   driver   Driver?    @relation(fields: [driverId], references: [id])
@@ -186,10 +194,10 @@ model Shipping {
   @@map("shipments")
 }
 
-model VehiclesShipping {
+model VehiclesShipment {
   id         String   @id @default(uuid())
-  shippingId String   @map("shipping_id")
-  shipping   Shipping @relation(fields: [shippingId], references: [id])
+  shipmentId String   @map("shipment_id")
+  shipments   Shipment @relation(fields: [shipmentId], references: [id])
   Vehicle    Vehicle? @relation(fields: [vehicleId], references: [id])
   vehicleId  String?
 
@@ -199,10 +207,10 @@ model VehiclesShipping {
   @@map("vehicles_shipments")
 }
 
-model CartsShipping {
+model CartsShipment {
   id         String   @id @default(uuid())
-  shippingId String   @map("shipping_id")
-  shipments  Shipping @relation(fields: [shippingId], references: [id])
+  shipmentId String   @map("shipment_id")
+  shipments  Shipment @relation(fields: [shipmentId], references: [id])
   cartId     String?
   Cart       Cart?    @relation(fields: [cartId], references: [id])
 

@@ -15,7 +15,9 @@ async function bootstrap() {
   function setupSwagger(app: INestApplication) {
     const config = new DocumentBuilder()
       .setTitle('FENRIR API')
-      .setDescription('The Fenrir apis is a REST API for the Fenrir project')
+      .setDescription(
+        'The Fenrir API is responsible for controlling the entire Fenrir application, where all business rules, as well as insertions/requests in the database, regarding charters and organization, are managed.',
+      )
       .setVersion('1.0')
       .addBearerAuth()
       .build();
