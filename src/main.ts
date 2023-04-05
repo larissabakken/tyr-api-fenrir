@@ -5,7 +5,7 @@ import { ValidationPipe, INestApplication } from '@nestjs/common';
 import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
 
   // Interceptors
