@@ -33,7 +33,7 @@ export class CartsService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const carts = await this.prisma.cart.findMany({
@@ -42,7 +42,8 @@ export class CartsService {
       include: { owner: true },
     });
     const total = await this.prisma.cart.count();
-    return { data: carts, total };
+    const pages = Math.ceil(total / limit);
+    return { data: carts, total: total, pages: pages };
   }
 
   async findOne(id: string) {

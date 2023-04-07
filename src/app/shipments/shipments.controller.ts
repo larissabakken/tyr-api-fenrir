@@ -65,7 +65,7 @@ export class ShipmentsController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number }>{
+  ): Promise<{ data: any[]; total: number; pages: number }> {
     const shipments = await this.shipmentsService.findAll(+page, +limit);
     return shipments;
   }

@@ -55,7 +55,7 @@ export class CustomersController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number, pages: number }>  {
     const customers = await this.customersService.findAll(+page, +limit);
     return customers;
   }

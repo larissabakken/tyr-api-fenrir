@@ -27,13 +27,13 @@ export class TrucksService {
       },
     });
 
-    return {data: truck, owner: owner};
+    return { data: truck, owner: owner };
   }
 
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const trucks = await this.prisma.truck.findMany({
@@ -42,14 +42,18 @@ export class TrucksService {
       include: { owner: true },
     });
     const total = await this.prisma.truck.count();
-    return { data: trucks, total };
+    const pages = Math.ceil(total / limit);
+    return { data: trucks, total: total, pages: pages };
   }
 
   async findOne(id: string) {
     if (!id) {
       throw new Error('ID is required');
     }
-    return await this.prisma.truck.findUnique({ where: { id }, include: { owner: true } });
+    return await this.prisma.truck.findUnique({
+      where: { id },
+      include: { owner: true },
+    });
   }
 
   async findAllByValue(

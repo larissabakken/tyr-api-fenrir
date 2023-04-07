@@ -71,7 +71,7 @@ export class ShipmentsService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
 
@@ -113,7 +113,7 @@ export class ShipmentsService {
       }),
     );
 
-    return { data: dataShipments, total };
+    return { data: dataShipments, total: total, pages: Math.ceil(total / limit) };
   }
 
   async findOne(id: string) {

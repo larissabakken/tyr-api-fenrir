@@ -48,7 +48,7 @@ export class CartsController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number }> {
     const carts = await this.cartsService.findAll(+page, +limit);
     return carts;
   }
