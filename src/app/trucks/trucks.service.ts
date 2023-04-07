@@ -27,7 +27,7 @@ export class TrucksService {
       },
     });
 
-    return {data: truck, owner};
+    return {data: truck, owner: owner};
   }
 
   async findAll(
@@ -39,6 +39,7 @@ export class TrucksService {
     const trucks = await this.prisma.truck.findMany({
       skip: isNaN(skip) ? 0 : skip,
       take: isNaN(take) ? 2 : take,
+      include: { owner: true },
     });
     const total = await this.prisma.truck.count();
     return { data: trucks, total };
@@ -48,7 +49,7 @@ export class TrucksService {
     if (!id) {
       throw new Error('ID is required');
     }
-    return await this.prisma.truck.findUnique({ where: { id } });
+    return await this.prisma.truck.findUnique({ where: { id }, include: { owner: true } });
   }
 
   async findAllByValue(

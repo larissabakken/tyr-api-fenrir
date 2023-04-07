@@ -27,7 +27,7 @@ export class CartsService {
       },
     });
 
-    return { data: cart, owner };
+    return { data: cart, owner: owner };
   }
 
   async findAll(
@@ -39,6 +39,7 @@ export class CartsService {
     const carts = await this.prisma.cart.findMany({
       skip: isNaN(skip) ? 0 : skip,
       take: isNaN(take) ? 2 : take,
+      include: { owner: true },
     });
     const total = await this.prisma.cart.count();
     return { data: carts, total };
