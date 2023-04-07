@@ -42,8 +42,8 @@ export class VehiclesService {
       include: { owner: true },
     });
     const total = await this.prisma.vehicle.count();
-    const pages = Math.ceil(total / limit);
-    return { data: vehicles, total: total, pages: pages };
+    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    return { data: vehicles, total, pages };
   }
 
   async findOne(id: string) {

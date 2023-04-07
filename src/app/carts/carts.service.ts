@@ -42,7 +42,7 @@ export class CartsService {
       include: { owner: true },
     });
     const total = await this.prisma.cart.count();
-    const pages = Math.ceil(total / limit);
+    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
     return { data: carts, total: total, pages: pages };
   }
 

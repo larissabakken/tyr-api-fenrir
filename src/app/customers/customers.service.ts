@@ -41,7 +41,7 @@ export class CustomersService {
       take: isNaN(take) ? 2 : take,
     });
     const total = await this.prisma.customers.count();
-    const pages = Math.ceil(total / limit);
+    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
     return { data: customers, total: total, pages: pages };
   }
 

@@ -42,7 +42,7 @@ export class TrucksService {
       include: { owner: true },
     });
     const total = await this.prisma.truck.count();
-    const pages = Math.ceil(total / limit);
+    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
     return { data: trucks, total: total, pages: pages };
   }
 

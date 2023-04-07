@@ -113,7 +113,7 @@ export class ShipmentsService {
       }),
     );
 
-    return { data: dataShipments, total: total, pages: Math.ceil(total / limit) };
+    return { data: dataShipments, total: total, pages: Math.ceil(total / (limit > 0 ? limit : 5)) };
   }
 
   async findOne(id: string) {

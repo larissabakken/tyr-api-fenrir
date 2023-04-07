@@ -47,7 +47,7 @@ export class DriversService {
       take: isNaN(take) ? 2 : take,
     });
     const total = await this.prisma.driver.count();
-    const pages = Math.ceil(total / limit);
+    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
     return { data: drivers, total: total, pages: pages };
   }
 
