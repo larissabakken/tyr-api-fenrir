@@ -200,8 +200,8 @@ model ShipmentVehicle {
   shipmentId String
   vehicleId  String
 
-  shipment Shipment @relation(fields: [shipmentId], references: [id])
-  vehicle  Vehicle  @relation(fields: [vehicleId], references: [id])
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  vehicle  Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   assignedAt DateTime @default(now())
 
@@ -213,8 +213,8 @@ model ShipmentCart {
   shipmentId String
   cartId     String
 
-  shipment Shipment @relation(fields: [shipmentId], references: [id])
-  cart     Cart     @relation(fields: [cartId], references: [id])
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  cart     Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   assignedAt DateTime @default(now())
 

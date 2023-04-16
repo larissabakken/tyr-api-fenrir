@@ -42,6 +42,19 @@ Table owners {
   updatedAt DateTime [not null]
 }
 
+Table customers {
+  id String [pk]
+  name String [not null]
+  cpf String [unique]
+  cnpj String [unique]
+  email String
+  phone String [not null]
+  address String
+  shipments shipments [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
 Table trucks {
   id String [pk]
   description String
@@ -103,24 +116,11 @@ Table vehicles {
   updatedAt DateTime [not null]
 }
 
-Table customers {
-  id String [pk]
-  name String [not null]
-  cpf String [unique]
-  cnpj String [unique]
-  email String
-  phone String [not null]
-  address String
-  shipments shipments [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
-
 Table shipments {
   id String [pk]
   origin String [not null]
   final_destination String [not null]
-  status Status [not null]
+  status Status [not null, default: 'PENDING']
   total_cost Float
   description String
   driverId String
@@ -179,10 +179,10 @@ Ref: shipments.driverId > drivers.id
 
 Ref: shipments.customerId > customers.id
 
-Ref: shipment_vehicles.shipmentId > shipments.id
+Ref: shipment_vehicles.shipmentId > shipments.id [delete: Cascade]
 
-Ref: shipment_vehicles.vehicleId > vehicles.id
+Ref: shipment_vehicles.vehicleId > vehicles.id [delete: Cascade]
 
-Ref: shipment_carts.shipmentId > shipments.id
+Ref: shipment_carts.shipmentId > shipments.id [delete: Cascade]
 
-Ref: shipment_carts.cartId > carts.id
+Ref: shipment_carts.cartId > carts.id [delete: Cascade]
