@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Validate,
   ValidateIf,
 } from 'class-validator';
 import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
@@ -59,5 +60,6 @@ export class CreateTruckDto implements Truck {
 
   @IsNotEmpty()
   @IsString()
+  @Validate(OwnerExistsValidator)
   ownerId: string;
 }

@@ -2,7 +2,10 @@ import { Prisma } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Cart implements Prisma.CartUncheckedCreateInput {
-  @ApiProperty({ example: '18e34291-c0e6-4771-b945-e2e3151c21a2', readOnly: true })
+  @ApiProperty({
+    example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    readOnly: true,
+  })
   id?: string;
 
   @ApiProperty({ example: 'Description about cart', required: false })
@@ -35,8 +38,17 @@ export class Cart implements Prisma.CartUncheckedCreateInput {
   @ApiProperty({ example: 'heavy', required: false })
   type_of_cart?: string;
 
-  @ApiProperty({ example: 'f918c0c3-af34-4d7b-976b-f46c119bc659', required: true })
+  @ApiProperty({
+    example: 'f918c0c3-af34-4d7b-976b-f46c119bc659',
+    required: true,
+  })
   ownerId: string;
+
+  @ApiProperty({
+    example: 'f918c0c3-af34-4d7b-976b-f46c119bc659',
+    required: false,
+  })
+  shipments?: Prisma.ShipmentCartUncheckedCreateNestedManyWithoutCartInput;
 
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z', readOnly: true })
   createdAt?: Date;

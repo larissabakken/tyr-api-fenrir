@@ -15,6 +15,7 @@ import { OwnersModule } from './app/owners/owners.module';
 import { VehiclesModule } from './app/vehicles/vehicles.module';
 import { TrucksModule } from './app/trucks/trucks.module';
 import { DriversModule } from './app/drivers/drivers.module';
+import { ShipmentsModule } from './shipments/shipments.module';
 
 @Module({
   imports: [

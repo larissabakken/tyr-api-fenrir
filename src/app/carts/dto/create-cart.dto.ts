@@ -58,4 +58,8 @@ export class CreateCartDto implements Cart {
   @IsString()
   ownerId: string;
 
+  @IsOptional()
+  @IsString()
+  shipments?: Prisma.ShipmentCartUncheckedCreateNestedManyWithoutCartInput;
+
 }

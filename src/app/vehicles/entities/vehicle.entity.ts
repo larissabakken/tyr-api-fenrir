@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Status } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Vehicle implements Prisma.VehicleUncheckedCreateInput {
@@ -9,6 +9,9 @@ export class Vehicle implements Prisma.VehicleUncheckedCreateInput {
   id?: string;
   @ApiProperty({ example: 'Description about vehicle', required: false })
   description?: string;
+
+  @ApiProperty({ example: 'PENDING', required: true })
+  status: Status;
 
   @ApiProperty({ example: 'Oslo - Norway', required: true })
   origin: string;
@@ -54,6 +57,12 @@ export class Vehicle implements Prisma.VehicleUncheckedCreateInput {
     uniqueItems: true,
   })
   ownerId: string;
+
+  @ApiProperty({
+    example: ['18e34291-c0e6-4771-b945-e2e3151c2', '18e34291-c0e6-4771-b945-e2e3151c2'],
+    required: false,
+  })
+  shipments?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutVehicleInput;
 
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z', readOnly: true })
   createdAt?: Date;

@@ -76,6 +76,23 @@ model Owner {
   @@map("owners")
 }
 
+model Customers {
+  id      String  @id @default(uuid())
+  name    String
+  cpf     String? @unique
+  cnpj    String? @unique
+  email   String?
+  phone   String
+  address String?
+
+  shipments Shipment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+}
+
 model Truck {
   id          String  @id @default(uuid())
   description String?
@@ -151,23 +168,6 @@ model Vehicle {
   updatedAt DateTime @updatedAt
 
   @@map("vehicles")
-}
-
-model Customers {
-  id      String  @id @default(uuid())
-  name    String
-  cpf     String? @unique
-  cnpj    String? @unique
-  email   String?
-  phone   String
-  address String?
-
-  shipments Shipment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("customers")
 }
 
 model Shipment {
