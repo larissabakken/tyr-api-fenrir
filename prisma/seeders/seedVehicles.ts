@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Status } from '@prisma/client';
 import * as casual from 'casual';
 
 export async function seedVehicles(prisma: PrismaClient) {
@@ -7,6 +7,7 @@ export async function seedVehicles(prisma: PrismaClient) {
   const vehicles = owners.map((owner) => {
     const letter = casual.letter.toUpperCase();
     const description = casual.description;
+    const status = Status.PENDING;
     const price = casual.double(1, 100000);
     const origin = casual.city;
     const destination = casual.city;
@@ -23,6 +24,7 @@ export async function seedVehicles(prisma: PrismaClient) {
       description,
       price,
       origin,
+      status,
       destination,
       license_plate: license_plate,
       chassis,

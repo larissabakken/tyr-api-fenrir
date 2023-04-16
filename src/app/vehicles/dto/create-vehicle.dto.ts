@@ -7,9 +7,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
 import { Prisma, Status } from '@prisma/client';
 import { Vehicle } from '../entities/vehicle.entity';
+import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
 
 
 export class CreateVehicleDto implements Vehicle {
@@ -72,6 +74,7 @@ export class CreateVehicleDto implements Vehicle {
 
   @IsNotEmpty()
   @IsString()
+  @Validate(OwnerExistsValidator)
   ownerId: string;
 
   @IsOptional()

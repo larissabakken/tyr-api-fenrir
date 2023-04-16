@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Validate,
   ValidateIf,
 } from 'class-validator';
 import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
@@ -56,6 +57,7 @@ export class CreateCartDto implements Cart {
 
   @IsNotEmpty()
   @IsString()
+  @Validate(OwnerExistsValidator)
   ownerId: string;
 
   @IsOptional()
