@@ -146,7 +146,7 @@ model Cart {
 model Vehicle {
   id            String  @id @default(uuid())
   description   String?
-  status        Status
+  status        Status @default(PENDING)
   price         Float?
   origin        String
   destination   String

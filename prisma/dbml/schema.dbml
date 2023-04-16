@@ -97,7 +97,7 @@ Table carts {
 Table vehicles {
   id String [pk]
   description String
-  status Status [not null]
+  status Status [not null, default: 'PENDING']
   price Float
   origin String [not null]
   destination String [not null]
