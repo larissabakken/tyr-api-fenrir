@@ -74,7 +74,6 @@ export class CreateVehicleDto implements Vehicle {
 
   @IsNotEmpty()
   @IsString()
-  @Validate(OwnerExistsValidator)
   ownerId: string;
 
   @IsOptional()

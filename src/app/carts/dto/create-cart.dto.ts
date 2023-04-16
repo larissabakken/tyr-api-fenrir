@@ -57,7 +57,6 @@ export class CreateCartDto implements Cart {
 
   @IsNotEmpty()
   @IsString()
-  @Validate(OwnerExistsValidator)
   ownerId: string;
 
   @IsOptional()

@@ -174,7 +174,7 @@ model Shipment {
   id                String  @id @default(uuid())
   origin            String
   final_destination String
-  status            Status
+  status            Status @default(PENDING)
   total_cost        Float?
   description       String?
 

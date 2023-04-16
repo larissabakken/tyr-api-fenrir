@@ -60,6 +60,5 @@ export class CreateTruckDto implements Truck {
 
   @IsNotEmpty()
   @IsString()
-  @Validate(OwnerExistsValidator)
   ownerId: string;
 }

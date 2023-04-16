@@ -28,11 +28,13 @@ export class Shipment implements Prisma.ShipmentUncheckedCreateInput {
     readOnly: true,
   })
   driverId?: string;
+
   @ApiProperty({
     example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
     readOnly: true,
   })
   truckId?: string;
+  
   @ApiProperty({
     example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
     readOnly: true,
