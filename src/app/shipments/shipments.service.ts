@@ -90,7 +90,6 @@ export class ShipmentsService {
 
     const dataShipments = await Promise.all(
       data.map(async (shipment) => {
-        console.log(shipment.carts);
         const carts = await Promise.all(
           shipment.carts.map(async (cartId) => {
             const cart = await this.prisma.cart.findUnique({
