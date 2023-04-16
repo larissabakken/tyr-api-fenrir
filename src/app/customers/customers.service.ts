@@ -52,13 +52,19 @@ export class CustomersService {
     return await this.prisma.customers.findUnique({ where: { id } });
   }
 
-  async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
-    if (!cpf && !cnpj && !email && !name) {
-      throw new Error('CPF, CNPJ, EMAIL or NAME is required');
-    }
-    return await this.prisma.customers.findMany({
-      where: { cpf, cnpj, email, name },
+  async searchCustomers(search: string) {
+    const customers = await this.prisma.customers.findMany({
+      where: {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { cpf: { contains: search, mode: 'insensitive' } },
+          { cnpj: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search, mode: 'insensitive' } },
+        ],
+      },
     });
+    return customers;
   }
 
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {

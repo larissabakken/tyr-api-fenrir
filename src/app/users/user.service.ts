@@ -39,6 +39,19 @@ export class UserService {
     return users;
   }
 
+  async searchUsers(search: string) {
+    const users = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { cpf: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+        ],
+      },
+    });
+    return users;
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.prisma.user.update({
       where: {

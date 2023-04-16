@@ -61,7 +61,6 @@ export class DriversService {
   async searchDrivers(search: string) {
     const drivers = await this.prisma.driver.findMany({
       where: {
-        status: true,
         OR: [
           { name: { contains: search, mode: 'insensitive' } },
           { cpf: { contains: search, mode: 'insensitive' } },

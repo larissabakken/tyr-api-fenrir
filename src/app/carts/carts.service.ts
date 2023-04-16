@@ -53,17 +53,18 @@ export class CartsService {
     return this.prisma.cart.findUnique({ where: { id } });
   }
 
-  async findAllByValue(
-    license_plate: string,
-    status: boolean,
-    number_of_axles: number,
-  ) {
-    if (!license_plate && !status && !number_of_axles) {
-      throw new Error('LICENSE_PLATE, STATUS or NUMBER_OF_AXLES is required');
-    }
-    return this.prisma.cart.findMany({
-      where: { license_plate, status, number_of_axles },
+  async searchCarts(search: string) {
+    const carts = await this.prisma.cart.findMany({
+      where: {
+        OR: [
+          { license_plate: { contains: search, mode: 'insensitive' } },
+          { chassis: { contains: search, mode: 'insensitive' } },
+          { renavam: { contains: search, mode: 'insensitive' } },
+          { model: { contains: search, mode: 'insensitive' } },
+        ],
+      }
     });
+    return carts;
   }
 
   async update(id: string, updateCartDto: UpdateCartDto) {

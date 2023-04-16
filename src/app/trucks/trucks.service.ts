@@ -56,17 +56,19 @@ export class TrucksService {
     });
   }
 
-  async findAllByValue(
-    license_plate: string,
-    status: boolean,
-    number_of_axles: number,
-  ) {
-    if (!license_plate && !status && !number_of_axles) {
-      throw new Error('LICENSE_PLATE, STATUS or NUMBER_OF_AXLES is required');
-    }
-    return await this.prisma.truck.findMany({
-      where: { license_plate, status, number_of_axles },
+  async searchTrucks(search: string) {
+    const vehicles = await this.prisma.truck.findMany({
+      where: {
+        OR: [
+          { license_plate: { contains: search, mode: 'insensitive' } },
+          { chassis: { contains: search, mode: 'insensitive' } },
+          { renavam: { contains: search, mode: 'insensitive' } },
+          { model: { contains: search, mode: 'insensitive' } },
+          { color: { contains: search, mode: 'insensitive' } },
+        ],
+      }
     });
+    return vehicles;
   }
 
   async update(id: string, updateTruckDto: UpdateTruckDto) {

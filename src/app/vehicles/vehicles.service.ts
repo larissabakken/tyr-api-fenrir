@@ -56,13 +56,20 @@ export class VehiclesService {
     });
   }
 
-  async findAllByValue(license_plate: string, origin: string) {
-    if (!license_plate && !origin) {
-      throw new Error('LICENSE_PLATE or ORIGIN is required');
-    }
-    return await this.prisma.vehicle.findMany({
-      where: { license_plate, origin },
+  async searchVehicles(search: string) {
+    const vehicles = await this.prisma.vehicle.findMany({
+      where: {
+        OR: [
+          { license_plate: { contains: search, mode: 'insensitive' } },
+          { chassis: { contains: search, mode: 'insensitive' } },
+          { renavam: { contains: search, mode: 'insensitive' } },
+          { model: { contains: search, mode: 'insensitive' } },
+          { origin: { contains: search, mode: 'insensitive' } },
+          { color: { contains: search, mode: 'insensitive' } },
+        ],
+      }
     });
+    return vehicles;
   }
 
   async update(id: string, updateVehicleDto: UpdateVehicleDto) {

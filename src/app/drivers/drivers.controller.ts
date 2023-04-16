@@ -83,9 +83,9 @@ export class DriversController {
   @ApiQuery({ name: 'name', required: false, type: String })
   @ApiQuery({ name: 'status', required: true, type: Boolean })
   @ApiResponse({ status: 200, description: 'The found record', type: Driver })
-  async searchOwner(@Param('search') search: string): Promise<Driver[]> {
-    const owners = await this.driversService.searchDrivers(search);
-    return owners;
+  async searchDriver(@Param('search') search: string): Promise<Driver[]> {
+    const drivers = await this.driversService.searchDrivers(search);
+    return drivers;
   }
 
   @Patch(':id')
