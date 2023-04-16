@@ -3,6 +3,7 @@ import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { Owner } from './entities/owner.entity';
 
 @Injectable()
 export class OwnersService {
@@ -52,16 +53,20 @@ export class OwnersService {
     return await this.prisma.owner.findUnique({ where: { id } });
   }
 
-  // async findAllByValue(cpf: string, cnpj: string, email: string, name: string) {
-  //   if (!cpf && !cnpj && !email && !name) {
-  //     throw new Error('CPF, CNPJ, EMAIL or NAME is required');
-  //   }
-  //   const owners = await this.prisma.owner.findMany({
-  //     where: { cpf, cnpj, email, name },
-  //   });
-
-  //   return { data: owners };
-  // }
+  async searchOwners(search: string) {
+    const owners = await this.prisma.owner.findMany({
+      where: {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { cpf: { contains: search, mode: 'insensitive' } },
+          { cnpj: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search, mode: 'insensitive' } },
+        ],
+      }
+    });
+    return owners;
+  }
 
   async update(id: string, updateOwnerDto: UpdateOwnerDto) {
     return await this.prisma.owner.update({
