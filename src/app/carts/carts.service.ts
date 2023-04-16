@@ -38,11 +38,11 @@ export class CartsService {
     const take = limit;
     const carts = await this.prisma.cart.findMany({
       skip: isNaN(skip) ? 0 : skip,
-      take: isNaN(take) ? 2 : take,
+      take: isNaN(take) ? 5 : take,
       include: { owner: true },
     });
     const total = await this.prisma.cart.count();
-    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    const pages = Math.ceil(total / (take > 0 ? limit : 5));
     return { data: carts, total: total, pages: pages };
   }
 

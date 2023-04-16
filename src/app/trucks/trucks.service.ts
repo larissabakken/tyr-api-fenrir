@@ -38,11 +38,11 @@ export class TrucksService {
     const take = limit;
     const trucks = await this.prisma.truck.findMany({
       skip: isNaN(skip) ? 0 : skip,
-      take: isNaN(take) ? 2 : take,
+      take: isNaN(take) ? 5 : take,
       include: { owner: true },
     });
     const total = await this.prisma.truck.count();
-    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    const pages = Math.ceil(total / (take ? take : 5));
     return { data: trucks, total: total, pages: pages };
   }
 

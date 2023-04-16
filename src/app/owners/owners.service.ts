@@ -39,10 +39,10 @@ export class OwnersService {
     const take = limit;
     const owners = await this.prisma.owner.findMany({
       skip: isNaN(skip) ? 0 : skip,
-      take: isNaN(take) ? 2 : take,
+      take: isNaN(take) ? 5 : take,
     });
     const total = await this.prisma.owner.count();
-    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    const pages = Math.ceil(total / (take ? take : 5));
     return { data: owners, total, pages };
   }
 

@@ -38,10 +38,10 @@ export class CustomersService {
     const take = limit;
     const customers = await this.prisma.customers.findMany({
       skip: isNaN(skip) ? 0 : skip,
-      take: isNaN(take) ? 2 : take,
+      take: isNaN(take) ? 5 : take,
     });
     const total = await this.prisma.customers.count();
-    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    const pages = Math.ceil(total / (take > 0 ? take : 5));
     return { data: customers, total: total, pages: pages };
   }
 
