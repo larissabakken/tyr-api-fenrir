@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import * as casual from 'casual';
 
 export async function seedCustomers(prisma: PrismaClient) {
-  const customers = Array.from({ length: 50 }, () => {
+  const customers = Array.from({ length: 10 }, () => {
     const name = casual.name;
     const cnpj = casual.numerify('##############');
     const email = casual.email;

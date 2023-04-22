@@ -76,50 +76,16 @@ export class CustomersController {
     return this.customersService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find customer by value' })
-  @ApiQuery({
-    name: 'cpf',
-    required: false,
-    type: String,
-    description: 'Customer CPF',
-  })
-  @ApiQuery({
-    name: 'cnpj',
-    required: false,
-    type: String,
-    description: 'Customer CNPJ',
-  })
-  @ApiQuery({
-    name: 'email',
-    required: false,
-    type: String,
-    description: 'Customer email',
-  })
-  @ApiQuery({
-    name: 'name',
-    required: false,
-    type: String,
-    description: 'Customer name',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The found records',
-    type: Customer,
-  })
-  async findAllByValue(
-    @Query('cpf') cpf: string,
-    @Query('cnpj') cnpj: string,
-    @Query('email') email: string,
-    @Query('name') name: string,
-  ) {
-    const customers = await this.customersService.findAllByValue(
-      cpf,
-      cnpj,
-      email,
-      name,
-    );
-    return customers;
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
+  @ApiQuery({ name: 'cpf', required: false, type: String })
+  @ApiQuery({ name: 'cnpj', required: false, type: String })
+  @ApiQuery({ name: 'email', required: false, type: String })
+  @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiResponse({ status: 200, description: 'The found record', type: Customer })
+  async searchCustomer(@Param('search') search: string): Promise<Customer[]> {
+    const drivers = await this.customersService.searchCustomers(search);
+    return drivers;
   }
 
   @Patch(':id')

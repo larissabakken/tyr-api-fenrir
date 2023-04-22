@@ -7,9 +7,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
-
+import { Prisma, Status } from '@prisma/client';
 import { Vehicle } from '../entities/vehicle.entity';
+
 
 export class CreateVehicleDto implements Vehicle {
   @IsOptional()
@@ -32,6 +34,10 @@ export class CreateVehicleDto implements Vehicle {
   @MinLength(2)
   @MaxLength(100)
   destination: string;
+
+  @IsNotEmpty()
+  @IsString()
+  status: Status;
 
   @IsNotEmpty()
   @IsString()
@@ -68,5 +74,9 @@ export class CreateVehicleDto implements Vehicle {
   @IsNotEmpty()
   @IsString()
   ownerId: string;
+
+  @IsOptional()
+  @IsString()
+  shipments?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutVehicleInput;
 
 }

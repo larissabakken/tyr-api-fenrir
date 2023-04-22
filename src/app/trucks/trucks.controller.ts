@@ -89,36 +89,15 @@ export class TrucksController {
     return this.trucksService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find truck by value' })
-  @ApiQuery({
-    name: 'license_plate',
-    required: false,
-    type: String,
-    description: 'Truck license plate',
-  })
-  @ApiQuery({
-    name: 'status',
-    required: false,
-    type: Boolean,
-    description: 'Truck status',
-  })
-  @ApiQuery({
-    name: 'number_of_axles',
-    required: false,
-    type: Number,
-    description: 'Truck number of axles',
-  })
-  async findAllByValue(
-    @Query('license_plate') license_plate: string,
-    @Query('status') status: boolean,
-    @Query('number_of_axles') number_of_axles: number,
-  ) {
-    const trucks = await this.trucksService.findAllByValue(
-      license_plate,
-      status,
-      number_of_axles,
-    );
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
+  @ApiQuery({ name: 'license_plate', required: false, type: String })
+  @ApiQuery({ name: 'chassis', required: false, type: String })
+  @ApiQuery({ name: 'renavam', required: false, type: String })
+  @ApiQuery({ name: 'model', required: false, type: String })
+  @ApiResponse({ status: 200, description: 'The found record', type: Truck })
+  async searchTruck(@Param('search') search: string): Promise<Truck[]> {
+    const trucks = await this.trucksService.searchTrucks(search);
     return trucks;
   }
 

@@ -38,11 +38,11 @@ export class VehiclesService {
     const take = limit;
     const vehicles = await this.prisma.vehicle.findMany({
       skip: isNaN(skip) ? 0 : skip,
-      take: isNaN(take) ? 2 : take,
+      take: isNaN(take) ? 5 : take,
       include: { owner: true },
     });
     const total = await this.prisma.vehicle.count();
-    const pages = Math.ceil(total / (limit > 0 ? limit : 5));
+    const pages = Math.ceil(total / (take > 0 ? take : 5));
     return { data: vehicles, total, pages };
   }
 
@@ -56,13 +56,20 @@ export class VehiclesService {
     });
   }
 
-  async findAllByValue(license_plate: string, origin: string) {
-    if (!license_plate && !origin) {
-      throw new Error('LICENSE_PLATE or ORIGIN is required');
-    }
-    return await this.prisma.vehicle.findMany({
-      where: { license_plate, origin },
+  async searchVehicles(search: string) {
+    const vehicles = await this.prisma.vehicle.findMany({
+      where: {
+        OR: [
+          { license_plate: { contains: search, mode: 'insensitive' } },
+          { chassis: { contains: search, mode: 'insensitive' } },
+          { renavam: { contains: search, mode: 'insensitive' } },
+          { model: { contains: search, mode: 'insensitive' } },
+          { origin: { contains: search, mode: 'insensitive' } },
+          { color: { contains: search, mode: 'insensitive' } },
+        ],
+      }
     });
+    return vehicles;
   }
 
   async update(id: string, updateVehicleDto: UpdateVehicleDto) {

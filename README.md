@@ -58,6 +58,9 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+
+## DBML
+Para usar o DBML, é necessário abrir o arquivo dbml no site https://dbdiagram.io/home e clicar em "Generate SQL" para gerar o SQL do banco de dados.
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

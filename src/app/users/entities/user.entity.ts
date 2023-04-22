@@ -1,7 +1,7 @@
-import { Permission, Prisma } from '@prisma/client';
+import { Permission } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class User implements Prisma.UserUncheckedCreateInput {
+export class User {
   @ApiProperty({
     example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
     readOnly: true,

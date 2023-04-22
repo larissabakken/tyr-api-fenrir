@@ -74,23 +74,15 @@ export class VehiclesController {
     return this.vehiclesService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find vehicle by license plate or origin' })
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
   @ApiQuery({ name: 'license_plate', required: false, type: String })
-  @ApiQuery({ name: 'origin', required: false, type: String })
-  @ApiResponse({
-    status: 200,
-    description: 'The found record',
-    type: Vehicle,
-  })
-  async findAllByValue(
-    @Query('license_plate') license_plate: string,
-    @Query('origin') origin: string,
-  ) {
-    const vehicles = await this.vehiclesService.findAllByValue(
-      license_plate,
-      origin,
-    );
+  @ApiQuery({ name: 'chassis', required: false, type: String })
+  @ApiQuery({ name: 'renavam', required: false, type: String })
+  @ApiQuery({ name: 'model', required: false, type: String })
+  @ApiResponse({ status: 200, description: 'The found record', type: Vehicle })
+  async searchVehicle(@Param('search') search: string): Promise<Vehicle[]> {
+    const vehicles = await this.vehiclesService.searchVehicles(search);
     return vehicles;
   }
 

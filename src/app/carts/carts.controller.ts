@@ -60,22 +60,15 @@ export class CartsController {
     return this.cartsService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find carts by value' })
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
   @ApiQuery({ name: 'license_plate', required: false, type: String })
-  @ApiQuery({ name: 'status', required: false, type: Boolean })
-  @ApiQuery({ name: 'number_of_axles', required: false, type: Number })
-  @ApiResponse({ status: 200, description: 'The found records', type: Cart })
-  async findAllByValue(
-    @Query('license_plate') license_plate: string,
-    @Query('status') status: boolean,
-    @Query('number_of_axles') number_of_axles: number,
-  ) {
-    const carts = await this.cartsService.findAllByValue(
-      license_plate,
-      status,
-      number_of_axles,
-    );
+  @ApiQuery({ name: 'chassis', required: false, type: String })
+  @ApiQuery({ name: 'renavam', required: false, type: String })
+  @ApiQuery({ name: 'model', required: false, type: String })
+  @ApiResponse({ status: 200, description: 'The found record', type: Cart })
+  async searchCart(@Param('search') search: string): Promise<Cart[]> {
+    const carts = await this.cartsService.searchCarts(search);
     return carts;
   }
 

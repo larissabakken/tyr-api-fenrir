@@ -8,34 +8,56 @@ export class Shipment implements Prisma.ShipmentUncheckedCreateInput {
   })
   id?: string;
 
-  @ApiProperty({ example: 'IN_PROGRESS', required: true, enum: Status })
+  @ApiProperty({ example: 'Description about shipment', required: false })
+  description?: string;
+
+  @ApiProperty({ example: 'IN_PROGRESS', required: false })
   status: Status;
 
-  @ApiProperty({ example: 'Oslo - Norway', required: true })
+  @ApiProperty({ example: 'Belo horizonte', required: true })
   origin: string;
 
-  @ApiProperty({ example: 'Rio de Janeiro - Brazil', required: true })
+  @ApiProperty({ example: 'São Paulo', required: true })
   final_destination: string;
 
-  @ApiProperty({ example: 34.45, required: true })
+  @ApiProperty({ example: '12000' })
   total_cost?: number;
 
-  @ApiProperty({ example: 'c0e6-4771-b945-e2e3151c21a2', required: true })
+  @ApiProperty({
+    example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    readOnly: true,
+  })
   driverId?: string;
 
-  @ApiProperty({ example: 'c0e6-4771-b945-e2e3151c21a2', required: true })
+  @ApiProperty({
+    example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    readOnly: true,
+  })
+  truckId?: string;
+  
+  @ApiProperty({
+    example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    readOnly: true,
+  })
   customerId?: string;
 
-  @ApiProperty({ example: 'c0e6-4771-b945-e2e3151c21a2', required: true })
-  truckId?: string;
+  @ApiProperty({
+    example: [
+      '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    ],
+  })
+  cartId?: string;
 
-  vehicles?: string[];
+  @ApiProperty({
+    example: [
+      '18e34291-c0e6-4771-b945-e2e3151c21a2',
+      '18e34291-c0e6-4771-b945-e2e3151c21a2',
+    ],
+  })
+  vehicles?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutShipmentInput;
 
-  carts?: string[];
-
-  @ApiProperty({ example: '2021-01-01', readOnly: true })
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z', readOnly: true })
   createdAt?: string | Date;
-
-  @ApiProperty({ example: '2021-01-01', readOnly: true })
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z', readOnly: true })
   updatedAt?: string | Date;
 }

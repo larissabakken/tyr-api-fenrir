@@ -57,6 +57,17 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
+  @ApiQuery({ name: 'cpf', required: false, type: String })
+  @ApiQuery({ name: 'email', required: false, type: String })
+  @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiResponse({ status: 200, description: 'The found record', type: User })
+  async searchUser(@Param('search') search: string): Promise<User[]> {
+    const users = await this.userService.searchUsers(search);
+    return users;
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Find one user' })
   @ApiParam({

@@ -7,8 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
+generator dbml {
+  provider = "prisma-dbml-generator"
 }
 
 enum Permission {
@@ -76,6 +76,23 @@ model Owner {
   @@map("owners")
 }
 
+model Customers {
+  id      String  @id @default(uuid())
+  name    String
+  cpf     String? @unique
+  cnpj    String? @unique
+  email   String?
+  phone   String
+  address String?
+
+  shipments Shipment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+}
+
 model Truck {
   id          String  @id @default(uuid())
   description String?
@@ -93,7 +110,7 @@ model Truck {
   number_of_axles     Int
 
   ownerId   String
-  owner     Owner      @relation("OwnerToTruck", fields: [ownerId], references: [id])
+  owner     Owner      @relation("OwnerToTruck", fields: [ownerId], references: [id], onDelete: Cascade)
   shipments Shipment[]
 
   createdAt DateTime @default(now())
@@ -116,11 +133,13 @@ model Cart {
   year_of_manufacture Int?
   type_of_cart        String?
 
-  ownerId   String
-  owner     Owner      @relation("OwnerToCart", fields: [ownerId], references: [id])
+  ownerId String
+  owner   Owner  @relation("OwnerToCart", fields: [ownerId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  shipments Shipment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("carts")
 }
@@ -128,6 +147,7 @@ model Cart {
 model Vehicle {
   id            String  @id @default(uuid())
   description   String?
+  status        Status  @default(PENDING)
   price         Float?
   origin        String
   destination   String
@@ -141,53 +161,51 @@ model Vehicle {
   year_of_manufacture Int?
   type_of_vehicle     String?
 
+  shipments ShipmentVehicle[]
   ownerId   String
-  owner     Owner      @relation("OwnerToVehicle", fields: [ownerId], references: [id])
-
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-
-  @@map("vehicles")
-}
-
-model Customers {
-  id      String  @id @default(uuid())
-  name    String
-  cpf     String? @unique
-  cnpj    String? @unique
-  email   String?
-  phone   String
-  address String?
-
-  shipments Shipment[]
+  owner     Owner             @relation("OwnerToVehicle", fields: [ownerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("customers")
+  @@map("vehicles")
 }
 
 model Shipment {
   id                String  @id @default(uuid())
   origin            String
   final_destination String
-  status            Status
+  status            Status  @default(PENDING)
   total_cost        Float?
   description       String?
 
   driverId   String?
   truckId    String?
   customerId String?
+  cartId     String?
 
-  vehicles String[]  @default([])
-  carts    String[]  @default([])  
+  vehicles ShipmentVehicle[]
 
   truck    Truck?     @relation(fields: [truckId], references: [id])
   driver   Driver?    @relation(fields: [driverId], references: [id])
   customer Customers? @relation(fields: [customerId], references: [id])
+  cart     Cart?      @relation(fields: [cartId], references: [id])
 
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("shipments")
+}
+
+model ShipmentVehicle {
+  id         String @id @default(uuid())
+  shipmentId String
+  vehicleId  String
+
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  vehicle  Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  assignedAt DateTime @default(now())
+
+  @@map("shipment_vehicles")
 }

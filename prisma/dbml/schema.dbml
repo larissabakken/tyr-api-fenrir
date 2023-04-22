@@ -1,0 +1,178 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id String [pk]
+  email String [unique, not null]
+  name String [not null]
+  password String [not null]
+  cpf String [unique, not null]
+  permission Permission [default: 'USER']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table drivers {
+  id String [pk]
+  name String [not null]
+  cpf String [unique]
+  cnpj String [unique]
+  email String
+  phone String [not null]
+  address String
+  status Boolean [not null]
+  shipments shipments [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table owners {
+  id String [pk]
+  name String [not null]
+  cpf String [unique]
+  cnpj String [unique]
+  email String
+  phone String
+  address String
+  trucks trucks [not null]
+  vehicles vehicles [not null]
+  carts carts [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table customers {
+  id String [pk]
+  name String [not null]
+  cpf String [unique]
+  cnpj String [unique]
+  email String
+  phone String [not null]
+  address String
+  shipments shipments [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table trucks {
+  id String [pk]
+  description String
+  license_plate String [unique, not null]
+  chassis String [unique]
+  renavam String [unique]
+  status Boolean [not null]
+  type_of_truck String
+  model String
+  color String
+  year_of_manufacture Int
+  type_of_cart String
+  number_of_axles Int [not null]
+  ownerId String [not null]
+  owner owners [not null]
+  shipments shipments [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table carts {
+  id String [pk]
+  description String
+  status Boolean [not null]
+  license_plate String [unique, not null]
+  chassis String [unique]
+  renavam String [unique]
+  model String
+  manufacturer String
+  number_of_axles Int
+  year_of_manufacture Int
+  type_of_cart String
+  ownerId String [not null]
+  owner owners [not null]
+  shipments shipments [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table vehicles {
+  id String [pk]
+  description String
+  status Status [not null, default: 'PENDING']
+  price Float
+  origin String [not null]
+  destination String [not null]
+  license_plate String [unique, not null]
+  chassis String [unique]
+  renavam String [unique]
+  model String
+  color String
+  manufacturer String
+  year_of_manufacture Int
+  type_of_vehicle String
+  shipments shipment_vehicles [not null]
+  ownerId String [not null]
+  owner owners [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table shipments {
+  id String [pk]
+  origin String [not null]
+  final_destination String [not null]
+  status Status [not null, default: 'PENDING']
+  total_cost Float
+  description String
+  driverId String
+  truckId String
+  customerId String
+  cartId String
+  vehicles shipment_vehicles [not null]
+  truck trucks
+  driver drivers
+  customer customers
+  cart carts
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table shipment_vehicles {
+  id String [pk]
+  shipmentId String [not null]
+  vehicleId String [not null]
+  shipment shipments [not null]
+  vehicle vehicles [not null]
+  assignedAt DateTime [default: `now()`, not null]
+}
+
+Enum Permission {
+  SUPERADMIN
+  ADMIN
+  USER
+  GUEST
+}
+
+Enum Status {
+  PENDING
+  IN_PROGRESS
+  FINISHED
+  CANCELED
+}
+
+Ref: trucks.ownerId > owners.id [delete: Cascade]
+
+Ref: carts.ownerId > owners.id [delete: Cascade]
+
+Ref: vehicles.ownerId > owners.id [delete: Cascade]
+
+Ref: shipments.truckId > trucks.id
+
+Ref: shipments.driverId > drivers.id
+
+Ref: shipments.customerId > customers.id
+
+Ref: shipments.cartId > carts.id
+
+Ref: shipment_vehicles.shipmentId > shipments.id [delete: Cascade]
+
+Ref: shipment_vehicles.vehicleId > vehicles.id [delete: Cascade]

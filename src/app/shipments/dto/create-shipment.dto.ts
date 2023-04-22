@@ -1,58 +1,46 @@
 import {
-  IsString,
+  IsNotEmpty,
+  IsOptional,
+  MATCHES,
+  Matches,
   MaxLength,
   MinLength,
-  IsOptional,
-  IsEnum,
-  IsNumber,
-  IsNotEmpty,
 } from 'class-validator';
-import { Prisma, Status } from '@prisma/client';
 import { Shipment } from '../entities/shipment.entity';
+import { Prisma, Status } from '@prisma/client';
 
-export class CreateShipmentDto implements Shipment {
-  @IsString()
-  @MinLength(2)
-  @MaxLength(100)
+export class CreateShipmentDto extends Shipment {
+  @IsNotEmpty()
+  @MinLength(10)
+  @MaxLength(150)
   origin: string;
 
-  @IsString()
-  @MinLength(2)
-  @MaxLength(100)
+  @IsNotEmpty()
+  @MinLength(10)
+  @MaxLength(150)
   final_destination: string;
 
-  @IsEnum(Status)
+  @IsOptional()
   status: Status;
 
   @IsOptional()
-  @IsNumber()
-  total_cost?: number;
+  total_cost: number;
 
   @IsOptional()
-  @IsString()
-  description?: string;
-
-  @IsNotEmpty()
-  @IsString()
-  driverId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  customerId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  truckId: string;
-
-  @IsNotEmpty()
-  vehicles?: string[];
-
-  @IsNotEmpty()
-  carts?: string[];
+  description: string;
 
   @IsOptional()
-  createdAt?: string | Date;
+  driverId?: string;
 
   @IsOptional()
-  updatedAt?: string | Date;
+  truckId?: string;
+
+  @IsOptional()
+  customerId?: string;
+
+  @IsOptional()
+  cartId?: string;
+
+  @IsOptional()
+  vehicles?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutShipmentInput;
 }

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import * as casual from 'casual';
 
 export async function seedDrivers(prisma: PrismaClient) {
-  const drivers = Array.from({ length: 50 }, () => ({
+  const drivers = Array.from({ length: 10 }, () => ({
     name: casual.name,
     cpf: casual.numerify('###########'),
     cnpj: casual.numerify('##############'),

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Status } from '@prisma/client';
 import * as casual from 'casual';
 
 
@@ -10,7 +10,7 @@ export async function seedShipments(prisma: PrismaClient) {
   const shipments = Array.from({ length: 10 }, (_, i) => {
     const origin = casual.city;
     const final_destination = casual.city;
-    const status = casual.random_element(['PENDING', 'IN_PROGRESS', 'FINISHED', 'CANCELED']);
+    const status = casual.random_element([Status.PENDING, Status.IN_PROGRESS, Status.CANCELED, Status.FINISHED]);
     const total_cost = casual.double(1000, 50000);
     const description = casual.description;
 

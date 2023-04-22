@@ -3,6 +3,10 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, INestApplication } from '@nestjs/common';
 import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+const port = process.env.PORT || 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -35,9 +39,20 @@ async function bootstrap() {
   );
   setupSwagger(app);
 
-  await app.listen(3030, () => {
-    console.log('Server is running on port 3030');
+  await app.listen(port, () => {
+    console.log(`Server running on port ${port}...`);
   });
+
+  (async () => {
+    try {
+      await prisma.$connect();
+      console.log('Connected to database.');
+      return { message: 'Connected to database' };
+    } catch (error) {
+      console.error('Error to connect', error);
+      throw new Error('Error to connect');
+    }
+  })();
 }
 
 bootstrap();

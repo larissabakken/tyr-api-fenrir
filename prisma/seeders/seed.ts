@@ -18,8 +18,6 @@ async function seed() {
   await seedTrucks(prisma);
   await seedCarts(prisma);
   await seedVehicles(prisma);
-  await seedShipments(prisma);
-
 }
 
 seed()

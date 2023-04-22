@@ -1,7 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class Driver implements Prisma.DriverUncheckedCreateInput {
+export class Driver {
   @ApiProperty({
     example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
     readOnly: true,

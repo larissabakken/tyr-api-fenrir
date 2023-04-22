@@ -2,7 +2,7 @@ import { PrismaClient, Permission } from '@prisma/client';
 import * as casual from 'casual';
 
 export async function seedUsers(prisma: PrismaClient) {
-  const users = Array(10).fill(0).map(() => {
+  const users = Array(5).fill(0).map(() => {
     const name = casual.name;
     const email = casual.email;
     const password = casual.password;

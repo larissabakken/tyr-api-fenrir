@@ -75,25 +75,16 @@ export class DriversController {
     return this.driversService.findOne(id);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Find driver by value' })
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find owner by cpf, cnpj, email or name' })
   @ApiQuery({ name: 'cpf', required: false, type: String })
   @ApiQuery({ name: 'cnpj', required: false, type: String })
   @ApiQuery({ name: 'email', required: false, type: String })
   @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'status', required: true, type: Boolean })
   @ApiResponse({ status: 200, description: 'The found record', type: Driver })
-  async findAllByValue(
-    @Query('cpf') cpf: string,
-    @Query('cnpj') cnpj: string,
-    @Query('email') email: string,
-    @Query('name') name: string,
-  ) {
-    const drivers = await this.driversService.findAllByValue(
-      cpf,
-      cnpj,
-      email,
-      name,
-    );
+  async searchDriver(@Param('search') search: string): Promise<Driver[]> {
+    const drivers = await this.driversService.searchDrivers(search);
     return drivers;
   }
 

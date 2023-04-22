@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,9 +21,8 @@ import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Public } from 'src/auth/public.decorator';
 import { Shipment } from './entities/shipment.entity';
-import { Cart } from '@prisma/client';
 
-@Public() // This decorator is used to allow access to this controller without authentication
+@Public()
 @ApiTags('shipments')
 @Controller('shipments')
 export class ShipmentsController {
@@ -42,53 +40,72 @@ export class ShipmentsController {
     description: 'The created record',
     type: Shipment,
   })
-  async create(
-    @Body()
-    createShipmentDto: CreateShipmentDto & {
-      vehicles: { vehicleId: string }[];
-      carts: { cartId: string }[];
-    },
-  ) {
-    const shipments = await this.shipmentsService.create(createShipmentDto);
-    return shipments;
+  create(@Body() createShipmentDto: CreateShipmentDto) {
+    return this.shipmentsService.create(createShipmentDto);
+  }
+
+  @Get(':id/vehicle/:vehicleId')
+  @ApiOperation({ summary: 'Add vehicle to shipment' })
+  @ApiParam({
+    name: 'id',
+    description: "Shipment's Id",
+    required: true,
+    type: String,
+  })
+  @ApiParam({
+    name: 'vehicleId',
+    description: "Vehicle's Id",
+    required: true,
+    type: String,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The updated record',
+  })
+  addVehicle(@Param('id') id: string, @Param('vehicleId') vehicleId: string) {
+    return this.shipmentsService.addVehicle(id, vehicleId);
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all shipments' })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiResponse({
     status: 200,
     description: 'The found records',
     type: Shipment,
   })
-  async findAll(
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
-    const shipments = await this.shipmentsService.findAll(+page, +limit);
-    return shipments;
+  findAll() {
+    return this.shipmentsService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Find shipment by id' })
-  @ApiParam({ name: 'id', required: true, type: String })
-  @ApiResponse({
-    status: 200,
-    description: 'The found record',
-    type: Shipment,
+  @ApiOperation({ summary: 'Find one shipment' })
+  @ApiParam({
+    name: 'id',
+    description: "Shipment's Id",
+    required: true,
+    type: String,
   })
   findOne(@Param('id') id: string) {
     return this.shipmentsService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update shipment by id' })
-  @ApiParam({ name: 'id', required: true, type: String })
+  @ApiOperation({ summary: 'Update shipment' })
+  @ApiParam({
+    name: 'id',
+    description: "Shipment's Id",
+    required: true,
+    type: String,
+  })
   @ApiBody({
     type: Shipment,
     examples: { 'application/json': {} },
     required: true,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The updated record',
+    type: Shipment,
   })
   update(
     @Param('id') id: string,
@@ -98,14 +115,12 @@ export class ShipmentsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete shipment by id' })
-  @ApiParam({ name: 'id', required: true, type: String })
-  @ApiResponse({
-    status: 200,
-    description: 'The deleted record',
-    type: Shipment,
-  })
   remove(@Param('id') id: string) {
     return this.shipmentsService.remove(id);
+  }
+
+  @Delete('vehicle/:id')
+  removeVehicle(@Param('id') id: string) {
+    return this.shipmentsService.removeVehicle(id);
   }
 }
