@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "engines": {
     "node": ">=18",
-    "prisma": ">=4.13.0",
+    "prisma": "^4",
     "npm": ">=7.x"
   },
   "scripts": {
