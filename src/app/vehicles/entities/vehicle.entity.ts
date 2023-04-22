@@ -1,7 +1,7 @@
 import { Prisma, Status } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class Vehicle implements Prisma.VehicleUncheckedCreateInput {
+export class Vehicle {
   @ApiProperty({
     example: '18e34291-c0e6-4771-b945-e2e3151c21a2',
     readOnly: true,

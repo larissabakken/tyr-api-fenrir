@@ -11,7 +11,6 @@ import {
 } from 'class-validator';
 import { Prisma, Status } from '@prisma/client';
 import { Vehicle } from '../entities/vehicle.entity';
-import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
 
 
 export class CreateVehicleDto implements Vehicle {

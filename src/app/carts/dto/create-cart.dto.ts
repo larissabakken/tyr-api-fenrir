@@ -4,12 +4,10 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  Validate,
   ValidateIf,
 } from 'class-validator';
-import { OwnerExistsValidator } from 'src/app/validators/owner-exists.validator';
 import { Cart } from '../entities/cart.entity';
-import { Prisma } from '@prisma/client';
+;
 
 export class CreateCartDto implements Cart {
   @IsOptional()
