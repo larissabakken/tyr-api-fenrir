@@ -6,6 +6,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthController } from './auth/auth.controller';
 
 import { PrismaModule } from './prisma/prisma.module';
+import { AppController } from './app.controller';
 import { UserModule } from './app/users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CartsModule } from './app/carts/carts.module';
@@ -29,7 +30,7 @@ import { DriversModule } from './app/drivers/drivers.module';
     TrucksModule,
     DriversModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AppController],
   providers: [
     {
       provide: APP_GUARD,

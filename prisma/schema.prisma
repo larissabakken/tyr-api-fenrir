@@ -133,9 +133,10 @@ model Cart {
   year_of_manufacture Int?
   type_of_cart        String?
 
-  shipments ShipmentCart[]
-  ownerId   String
-  owner     Owner          @relation("OwnerToCart", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+  owner   Owner  @relation("OwnerToCart", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  shipments Shipment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -146,7 +147,7 @@ model Cart {
 model Vehicle {
   id            String  @id @default(uuid())
   description   String?
-  status        Status @default(PENDING)
+  status        Status  @default(PENDING)
   price         Float?
   origin        String
   destination   String
@@ -174,20 +175,21 @@ model Shipment {
   id                String  @id @default(uuid())
   origin            String
   final_destination String
-  status            Status @default(PENDING)
+  status            Status  @default(PENDING)
   total_cost        Float?
   description       String?
 
   driverId   String?
   truckId    String?
   customerId String?
+  cartId     String?
 
   vehicles ShipmentVehicle[]
-  carts    ShipmentCart[]
 
   truck    Truck?     @relation(fields: [truckId], references: [id])
   driver   Driver?    @relation(fields: [driverId], references: [id])
   customer Customers? @relation(fields: [customerId], references: [id])
+  cart     Cart?      @relation(fields: [cartId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -206,17 +208,4 @@ model ShipmentVehicle {
   assignedAt DateTime @default(now())
 
   @@map("shipment_vehicles")
-}
-
-model ShipmentCart {
-  id         String @id @default(uuid())
-  shipmentId String
-  cartId     String
-
-  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
-  cart     Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-
-  assignedAt DateTime @default(now())
-
-  @@map("shipment_carts")
 }
