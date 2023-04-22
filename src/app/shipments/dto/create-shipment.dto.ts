@@ -39,8 +39,8 @@ export class CreateShipmentDto extends Shipment {
   customerId?: string;
 
   @IsOptional()
-  vehicles?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutShipmentInput;
+  cartId?: string;
 
   @IsOptional()
-  carts?: Prisma.ShipmentCartUncheckedCreateNestedManyWithoutShipmentInput;
+  vehicles?: Prisma.ShipmentVehicleUncheckedCreateNestedManyWithoutShipmentInput;
 }

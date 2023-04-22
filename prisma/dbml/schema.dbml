@@ -87,9 +87,9 @@ Table carts {
   number_of_axles Int
   year_of_manufacture Int
   type_of_cart String
-  shipments shipment_carts [not null]
   ownerId String [not null]
   owner owners [not null]
+  shipments shipments [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -126,11 +126,12 @@ Table shipments {
   driverId String
   truckId String
   customerId String
+  cartId String
   vehicles shipment_vehicles [not null]
-  carts shipment_carts [not null]
   truck trucks
   driver drivers
   customer customers
+  cart carts
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -141,15 +142,6 @@ Table shipment_vehicles {
   vehicleId String [not null]
   shipment shipments [not null]
   vehicle vehicles [not null]
-  assignedAt DateTime [default: `now()`, not null]
-}
-
-Table shipment_carts {
-  id String [pk]
-  shipmentId String [not null]
-  cartId String [not null]
-  shipment shipments [not null]
-  cart carts [not null]
   assignedAt DateTime [default: `now()`, not null]
 }
 
@@ -179,10 +171,8 @@ Ref: shipments.driverId > drivers.id
 
 Ref: shipments.customerId > customers.id
 
+Ref: shipments.cartId > carts.id
+
 Ref: shipment_vehicles.shipmentId > shipments.id [delete: Cascade]
 
 Ref: shipment_vehicles.vehicleId > vehicles.id [delete: Cascade]
-
-Ref: shipment_carts.shipmentId > shipments.id [delete: Cascade]
-
-Ref: shipment_carts.cartId > carts.id [delete: Cascade]

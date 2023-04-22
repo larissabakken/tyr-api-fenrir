@@ -8,7 +8,7 @@ export class ShipmentsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createShipmentDto: CreateShipmentDto) {
-    const { driverId, truckId, customerId, carts, vehicles, ...shipmentData } =
+    const { driverId, truckId, customerId, cartId, vehicles, ...shipmentData } =
       createShipmentDto;
 
     try {
@@ -23,6 +23,9 @@ export class ShipmentsService {
           },
           customer: {
             connect: { id: customerId },
+          },
+          cart: {
+            connect: { id: cartId },
           },
         },
       });
@@ -47,21 +50,6 @@ export class ShipmentsService {
     }
   }
 
-  async addCart(id: string, cartId: string) {
-    try {
-      const shipmentCart = await this.prisma.shipmentCart.create({
-        data: {
-          shipmentId: id,
-          cartId: cartId,
-        },
-      });
-
-      return shipmentCart;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   async removeVehicle(id: string) {
     try {
       const shipmentVehicle = await this.prisma.shipmentVehicle.delete({
@@ -74,29 +62,13 @@ export class ShipmentsService {
     }
   }
 
-  async removeCart(id: string) {
-    try {
-      const shipmentCart = await this.prisma.shipmentCart.delete({
-        where: { id },
-      });
-
-      return shipmentCart;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   async findAll() {
     return await this.prisma.shipment.findMany({
       include: {
         driver: true,
         truck: true,
         customer: true,
-        carts: {
-          include: {
-            cart: true,
-          },
-        },
+        cart: true,
         vehicles: {
           include: {
             vehicle: true,
@@ -113,11 +85,7 @@ export class ShipmentsService {
         driver: true,
         truck: true,
         customer: true,
-        carts: {
-          include: {
-            cart: true,
-          },
-        },
+        cart: true,
         vehicles: {
           include: {
             vehicle: true,
@@ -128,7 +96,7 @@ export class ShipmentsService {
   }
 
   async update(id: string, updateShipmentDto: UpdateShipmentDto) {
-    const { driverId, truckId, customerId, carts, vehicles, ...shipmentData } =
+    const { driverId, truckId, customerId, cartId, vehicles, ...shipmentData } =
       updateShipmentDto;
 
     try {
@@ -144,6 +112,9 @@ export class ShipmentsService {
           },
           customer: {
             connect: { id: customerId },
+          },
+          cart: {
+            connect: { id: cartId },
           },
         },
       });
