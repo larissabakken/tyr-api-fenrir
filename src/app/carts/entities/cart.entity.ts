@@ -44,12 +44,6 @@ export class Cart implements Prisma.CartUncheckedCreateInput {
   })
   ownerId: string;
 
-  @ApiProperty({
-    example: 'f918c0c3-af34-4d7b-976b-f46c119bc659',
-    required: false,
-  })
-  shipments?: Prisma.ShipmentCartUncheckedCreateNestedManyWithoutCartInput;
-
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z', readOnly: true })
   createdAt?: Date;
 

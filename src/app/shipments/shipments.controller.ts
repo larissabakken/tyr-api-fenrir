@@ -66,28 +66,6 @@ export class ShipmentsController {
     return this.shipmentsService.addVehicle(id, vehicleId);
   }
 
-  @Get(':id/cart/:cartId')
-  @ApiOperation({ summary: 'Add cart to shipment' })
-  @ApiParam({
-    name: 'id',
-    description: "Shipment's Id",
-    required: true,
-    type: String,
-  })
-  @ApiParam({
-    name: 'cartId',
-    description: "Cart's Id",
-    required: true,
-    type: String,
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'The updated record',
-  })
-  addCart(@Param('id') id: string, @Param('idCart') cartId: string) {
-    return this.shipmentsService.addCart(id, cartId);
-  }
-
   @Get()
   @ApiOperation({ summary: 'Find all shipments' })
   @ApiResponse({
@@ -144,10 +122,5 @@ export class ShipmentsController {
   @Delete('vehicle/:id')
   removeVehicle(@Param('id') id: string) {
     return this.shipmentsService.removeVehicle(id);
-  }
-
-  @Delete('cart/:id')
-  removeCart(@Param('id') id: string) {
-    return this.shipmentsService.removeCart(id);
   }
 }
