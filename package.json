@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "nest build",
-    "buildNest": "nest build",
+    "prebuild": "rimraf dist",
+    "postinstall": "npx prisma generate && npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
@@ -25,8 +26,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm run build",
-    "prisma:migrate": "npx prisma migrate deploy --preview-feature"
+    "prisma:save": "npx prisma migrate save --experimental",
+    "prisma:up": "npx prisma migrate up --experimental",
+    "prisma:generate": "npx prisma generate",
+    "prisma:studio": "npx prisma studio --experimental"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
