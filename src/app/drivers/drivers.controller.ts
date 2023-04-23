@@ -20,10 +20,9 @@ import {
 import { DriversService } from './drivers.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Driver } from './entities/driver.entity';
 
-@Public() // This decorator is used to allow access to this controller without authentication
+
 @ApiTags('drivers')
 @Controller('drivers')
 export class DriversController {

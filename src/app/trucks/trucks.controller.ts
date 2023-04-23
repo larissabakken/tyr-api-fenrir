@@ -20,11 +20,10 @@ import {
 import { TrucksService } from './trucks.service';
 import { CreateTruckDto } from './dto/create-truck.dto';
 import { UpdateTruckDto } from './dto/update-truck.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Truck } from './entities/truck.entity';
 
-@Public()
 @ApiTags('trucks')
+@ApiBearerAuth()
 @Controller('trucks')
 export class TrucksController {
   constructor(private readonly trucksService: TrucksService) {}

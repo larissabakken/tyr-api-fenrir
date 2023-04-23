@@ -13,17 +13,15 @@ import {
   ApiResponse,
   ApiBody,
   ApiTags,
-  ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
 import { ShipmentsService } from './shipments.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Shipment } from './entities/shipment.entity';
 
-@Public()
 @ApiTags('shipments')
+@ApiBearerAuth()
 @Controller('shipments')
 export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}

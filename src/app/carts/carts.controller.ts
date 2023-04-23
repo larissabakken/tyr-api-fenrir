@@ -19,10 +19,8 @@ import {
 import { CartsService } from './carts.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Cart } from './entities/cart.entity';
 
-@Public()
 @ApiTags('carts')
 @Controller('carts')
 export class CartsController {

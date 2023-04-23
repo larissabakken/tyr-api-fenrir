@@ -20,10 +20,8 @@ import {
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Customer } from './entities/customer.entity';
 
-@Public() // This decorator is used to allow access to this controller without authentication
 @ApiTags('customers')
 @Controller('customers')
 export class CustomersController {

@@ -19,11 +19,10 @@ import {
 import { OwnersService } from './owners.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Owner } from './entities/owner.entity';
 
-@Public() // This decorator is used to allow access to this controller without authentication
 @ApiTags('owners')
+@ApiBearerAuth()
 @Controller('owners')
 export class OwnersController {
   constructor(private readonly ownersService: OwnersService) {}

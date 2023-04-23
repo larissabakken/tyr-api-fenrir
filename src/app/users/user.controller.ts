@@ -23,9 +23,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from 'src/auth/public.decorator';
 import { User } from './entities/user.entity';
 
+@Public()
 @ApiTags('users')
 @Controller('users')
-@Public()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
