@@ -5,5 +5,7 @@ export interface UserToken {
         username: string;
         name?: string;
         email?: string;
+        sub: string;
+        permission: string;
     };
 }
