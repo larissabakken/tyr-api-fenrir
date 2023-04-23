@@ -56,7 +56,13 @@ export class VehiclesController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number, pages: number }>  {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const vehicles = await this.vehiclesService.findAll(+page, +limit);
     return vehicles;
   }

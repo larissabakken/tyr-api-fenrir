@@ -53,7 +53,13 @@ export class CustomersController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number, pages: number }>  {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const customers = await this.customersService.findAll(+page, +limit);
     return customers;
   }
@@ -103,7 +109,10 @@ export class CustomersController {
     description: 'The updated record',
     type: Customer,
   })
-  update( @Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ) {
     return this.customersService.update(id, updateCustomerDto);
   }
 

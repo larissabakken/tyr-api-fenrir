@@ -22,7 +22,6 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { Driver } from './entities/driver.entity';
 
-
 @ApiTags('drivers')
 @Controller('drivers')
 export class DriversController {
@@ -57,7 +56,13 @@ export class DriversController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number, pages: number }>  {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const drivers = await this.driversService.findAll(+page, +limit);
     return drivers;
   }

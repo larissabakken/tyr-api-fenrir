@@ -39,7 +39,7 @@ export class DriversService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number, currentPage: number, perPage: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const drivers = await this.prisma.driver.findMany({
@@ -48,7 +48,7 @@ export class DriversService {
     });
     const total = await this.prisma.driver.count();
     const pages = Math.ceil(total / (take ? take : 5));
-    return { data: drivers, total: total, pages: pages };
+    return { data: drivers, total: total, pages: pages, currentPage: page, perPage: limit };
   }
 
   async findOne(id: string) {
