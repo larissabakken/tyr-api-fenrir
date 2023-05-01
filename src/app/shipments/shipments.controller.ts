@@ -127,8 +127,21 @@ export class ShipmentsController {
     return this.shipmentsService.remove(id);
   }
 
-  @Delete('vehicle/:id')
-  removeVehicle(@Param('id') id: string) {
-    return this.shipmentsService.removeVehicle(id);
+  @Get(':id/vehicle/:vehicleId')
+  @ApiOperation({ summary: 'Delete vehicle to shipment' })
+  @ApiParam({
+    name: 'id',
+    description: "Shipment's Id",
+    required: true,
+    type: String,
+  })
+  @ApiParam({
+    name: 'vehicleId',
+    description: "Vehicle's Id",
+    required: true,
+    type: String,
+  })
+  deleteVehicle(@Param('id') id: string, @Param('vehicleId') vehicleId: string) {
+    return this.shipmentsService.removeVehicle(id, vehicleId);
   }
 }

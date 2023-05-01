@@ -50,19 +50,23 @@ export class ShipmentsService {
     }
   }
 
-  async removeVehicle(id: string) {
+  async removeVehicle(id: string, vehicleId: string) {
     try {
-      const shipmentVehicle = await this.prisma.shipmentVehicle.delete({
-        where: { id },
+      return await this.prisma.shipmentVehicle.deleteMany({
+        where: {
+          shipmentId: id,
+          vehicleId: vehicleId,
+        },
       });
-
-      return shipmentVehicle;
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async findAll(page: number, limit: number) : Promise<{
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{
     data: any[];
     total: number;
     pages: number;
