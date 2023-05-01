@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
 import { ValidationPipe, INestApplication } from '@nestjs/common';
-import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaClient } from '@prisma/client';
+
+import { AppModule } from './app.module';
+import { UnauthorizedInterceptor } from './interceptors/Unauthorized.interceptor';
 
 const prisma = new PrismaClient();
 const port = process.env.PORT || 3000;

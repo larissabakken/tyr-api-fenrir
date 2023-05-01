@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -71,8 +72,17 @@ export class ShipmentsController {
     description: 'The found records',
     type: Shipment,
   })
-  findAll() {
-    return this.shipmentsService.findAll();
+  async findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
+    return this.shipmentsService.findAll(+page, +limit);
   }
 
   @Get(':id')

@@ -62,8 +62,18 @@ export class ShipmentsService {
     }
   }
 
-  async findAll() {
-    return await this.prisma.shipment.findMany({
+  async findAll(page: number, limit: number) : Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const shipments = await this.prisma.shipment.findMany({
+      skip: isNaN(skip) ? 0 : skip,
+      take: isNaN(take) ? 5 : take,
       include: {
         driver: true,
         truck: true,
@@ -76,6 +86,15 @@ export class ShipmentsService {
         },
       },
     });
+    const total = await this.prisma.shipment.count();
+    const pages = Math.ceil(total / (take > 0 ? take : 5));
+    return {
+      data: shipments,
+      total: total,
+      pages: pages,
+      currentPage: page,
+      perPage: limit,
+    };
   }
 
   async findOne(id: string) {
