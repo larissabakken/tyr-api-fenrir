@@ -20,6 +20,12 @@ export class Shipment implements Prisma.ShipmentUncheckedCreateInput {
   @ApiProperty({ example: 'São Paulo', required: true })
   final_destination: string;
 
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z'})
+  date_initiated?: string | Date;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  date_finalized?: string | Date;
+
   @ApiProperty({ example: '12000' })
   total_cost?: number;
 

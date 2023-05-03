@@ -20,6 +20,12 @@ export class VehiclesService {
 
     const vehicle = await this.prisma.vehicle.create({
       data: {
+        date_finalized: vehicleData.date_finalized
+          ? new Date(vehicleData.date_finalized)
+          : null,
+        date_initiated: vehicleData.date_initiated
+          ? new Date(vehicleData.date_initiated)
+          : null,
         ...vehicleData,
         owner: {
           connect: { id: ownerId },
@@ -33,7 +39,13 @@ export class VehiclesService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number; pages: number, currentPage: number, perPage: number }> {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const vehicles = await this.prisma.vehicle.findMany({
@@ -43,7 +55,13 @@ export class VehiclesService {
     });
     const total = await this.prisma.vehicle.count();
     const pages = Math.ceil(total / (take > 0 ? take : 5));
-    return { data: vehicles, total: total, pages: pages, currentPage: page, perPage: limit };
+    return {
+      data: vehicles,
+      total: total,
+      pages: pages,
+      currentPage: page,
+      perPage: limit,
+    };
   }
 
   async findOne(id: string) {
@@ -67,7 +85,7 @@ export class VehiclesService {
           { origin: { contains: search, mode: 'insensitive' } },
           { color: { contains: search, mode: 'insensitive' } },
         ],
-      }
+      },
     });
     return vehicles;
   }
@@ -75,7 +93,15 @@ export class VehiclesService {
   async update(id: string, updateVehicleDto: UpdateVehicleDto) {
     return await this.prisma.vehicle.update({
       where: { id },
-      data: updateVehicleDto,
+      data: {
+        date_finalized: updateVehicleDto.date_finalized
+          ? new Date(updateVehicleDto.date_finalized)
+          : updateVehicleDto.date_finalized,
+        date_initiated: updateVehicleDto.date_initiated
+          ? new Date(updateVehicleDto.date_initiated)
+          : updateVehicleDto.date_initiated,
+        ...updateVehicleDto,
+      },
     });
   }
 

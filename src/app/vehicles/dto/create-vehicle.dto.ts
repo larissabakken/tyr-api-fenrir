@@ -35,6 +35,12 @@ export class CreateVehicleDto implements Vehicle {
   @MaxLength(100)
   destination: string;
 
+  @IsOptional()
+  date_initiated?: string | Date;
+
+  @IsOptional()
+  date_finalized?: string | Date;
+
   @IsNotEmpty()
   @IsString()
   status: Status;

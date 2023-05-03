@@ -19,6 +19,12 @@ export class Vehicle {
   @ApiProperty({ example: 'Drøbak - Norway', required: true })
   destination: string;
 
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z'})
+  date_initiated?: string | Date;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  date_finalized?: string | Date;
+
   @ApiProperty({ example: 'ELS112', required: true, uniqueItems: true })
   license_plate: string;
 

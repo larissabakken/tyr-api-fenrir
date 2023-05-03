@@ -14,6 +14,12 @@ export class ShipmentsService {
     try {
       const shipment = await this.prisma.shipment.create({
         data: {
+          date_finalized: shipmentData.date_finalized
+            ? new Date(shipmentData.date_finalized)
+            : null,
+          date_initiated: shipmentData.date_initiated
+            ? new Date(shipmentData.date_initiated)
+            : null,
           ...shipmentData,
           driver: {
             connect: { id: driverId },
@@ -126,6 +132,12 @@ export class ShipmentsService {
       const shipment = await this.prisma.shipment.update({
         where: { id },
         data: {
+          date_finalized: shipmentData.date_finalized
+            ? new Date(shipmentData.date_finalized)
+            : shipmentData.date_finalized,
+          date_initiated: shipmentData.date_initiated
+            ? new Date(shipmentData.date_initiated)
+            : shipmentData.date_finalized,
           ...shipmentData,
           driver: {
             connect: { id: driverId },
