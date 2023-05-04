@@ -43,6 +43,18 @@ export class ShipmentsService {
 
   async addVehicle(id: string, vehicleId: string) {
     try {
+      if (!(await this.prisma.shipment.findUnique({ where: { id } })))
+        throw new Error('Shipment not found');
+
+      if (!(await this.prisma.vehicle.findUnique({ where: { id: vehicleId } })))
+        throw new Error('Vehicle not found');
+
+      if (
+        await this.prisma.shipmentVehicle.findFirst({
+          where: { shipmentId: id, vehicleId: vehicleId },
+        })
+      )
+        throw new Error('Vehicle already added');
       const shipmentVehicle = await this.prisma.shipmentVehicle.create({
         data: {
           shipmentId: id,
