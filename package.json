@@ -31,22 +31,27 @@
     "prisma:studio": "npx prisma studio --experimental"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.328.0",
+    "@aws-sdk/s3-request-presigner": "^3.328.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.2",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.3",
-    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/platform-express": "^9.4.0",
     "@nestjs/swagger": "^6.3.0",
     "@prisma/client": "^4.13.0",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sharp": "^0.32.1"
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^10.1.0",
@@ -56,6 +61,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
+    "@types/multer": "^1.4.7",
     "@types/node": "18.11.18",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
