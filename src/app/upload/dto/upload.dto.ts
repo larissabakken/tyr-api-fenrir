@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { UploadImageOptions } from 'src/app/aws/awsS3.types';
 
-export class UploadDto {
+export class UploadDto implements UploadImageOptions {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  format: string;
+  format: 'png' | 'jpg';
 
   @ApiProperty()
   @IsBoolean()

@@ -18,11 +18,18 @@ import axios from 'axios';
 
 import { AwsS3Service } from '../aws/awsS3.service';
 import { UploadDto } from './dto/upload.dto';
+import { Public } from 'src/auth/public.decorator';
 
+@Public()
 @ApiTags('upload')
 @Controller('upload')
 export class UploadController {
   constructor(private readonly awsS3Service: AwsS3Service) {}
+
+  @Get('teste')
+  async teste() {
+    return 'teste';
+  }
 
   // Endpoint para obter um arquivo do S3 temporariamente
   @Get('/*')
@@ -57,6 +64,7 @@ export class UploadController {
     @Body() payload: UploadDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    console.log('bateu aqui', payload);
     const response = [];
 
     // Define os parâmetros de upload
