@@ -104,8 +104,9 @@ Table vehicles {
   price Float
   origin String [not null]
   destination String [not null]
-  date_finalized DateTime
-  date_initiated DateTime
+  date_received DateTime
+  date_taken DateTime
+  date_delivered DateTime
   model String
   color String
   manufacturer String
