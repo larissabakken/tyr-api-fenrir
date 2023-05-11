@@ -16,6 +16,7 @@ import { OwnersModule } from './app/owners/owners.module';
 import { VehiclesModule } from './app/vehicles/vehicles.module';
 import { TrucksModule } from './app/trucks/trucks.module';
 import { DriversModule } from './app/drivers/drivers.module';
+import { AwsS3Module } from './app/aws/awsS3.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DriversModule } from './app/drivers/drivers.module';
     OwnersModule,
     TrucksModule,
     DriversModule,
+    AwsS3Module,
   ],
   controllers: [AuthController, AppController],
   providers: [

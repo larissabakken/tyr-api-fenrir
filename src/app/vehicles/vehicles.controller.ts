@@ -20,11 +20,10 @@ import {
 import { VehiclesService } from './vehicles.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Vehicle } from './entities/vehicle.entity';
 
-@Public()
 @ApiTags('vehicles')
+@ApiBearerAuth()
 @Controller('vehicles')
 export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
@@ -57,7 +56,13 @@ export class VehiclesController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number, pages: number }>  {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const vehicles = await this.vehiclesService.findAll(+page, +limit);
     return vehicles;
   }

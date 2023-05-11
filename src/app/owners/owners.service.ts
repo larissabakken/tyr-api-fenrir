@@ -34,7 +34,13 @@ export class OwnersService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const owners = await this.prisma.owner.findMany({
@@ -43,7 +49,13 @@ export class OwnersService {
     });
     const total = await this.prisma.owner.count();
     const pages = Math.ceil(total / (take ? take : 5));
-    return { data: owners, total, pages };
+    return {
+      data: owners,
+      total: total,
+      pages: pages,
+      currentPage: page,
+      perPage: limit,
+    };
   }
 
   async findOne(id: string) {
@@ -63,7 +75,7 @@ export class OwnersService {
           { email: { contains: search, mode: 'insensitive' } },
           { phone: { contains: search, mode: 'insensitive' } },
         ],
-      }
+      },
     });
     return owners;
   }

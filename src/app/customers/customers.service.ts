@@ -33,7 +33,7 @@ export class CustomersService {
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
+  ): Promise<{ data: any[]; total: number; pages: number, currentPage: number, perPage: number }> {
     const skip = (page - 1) * limit;
     const take = limit;
     const customers = await this.prisma.customers.findMany({
@@ -42,7 +42,7 @@ export class CustomersService {
     });
     const total = await this.prisma.customers.count();
     const pages = Math.ceil(total / (take > 0 ? take : 5));
-    return { data: customers, total: total, pages: pages };
+    return { data: customers, total: total, pages: pages, currentPage: page, perPage: limit };
   }
 
   async findOne(id: string) {

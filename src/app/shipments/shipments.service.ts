@@ -14,6 +14,12 @@ export class ShipmentsService {
     try {
       const shipment = await this.prisma.shipment.create({
         data: {
+          date_finalized: shipmentData.date_finalized
+            ? new Date(shipmentData.date_finalized)
+            : null,
+          date_initiated: shipmentData.date_initiated
+            ? new Date(shipmentData.date_initiated)
+            : null,
           ...shipmentData,
           driver: {
             connect: { id: driverId },
@@ -37,6 +43,18 @@ export class ShipmentsService {
 
   async addVehicle(id: string, vehicleId: string) {
     try {
+      if (!(await this.prisma.shipment.findUnique({ where: { id } })))
+        throw new Error('Shipment not found');
+
+      if (!(await this.prisma.vehicle.findUnique({ where: { id: vehicleId } })))
+        throw new Error('Vehicle not found');
+
+      if (
+        await this.prisma.shipmentVehicle.findFirst({
+          where: { shipmentId: id, vehicleId: vehicleId },
+        })
+      )
+        throw new Error('Vehicle already added');
       const shipmentVehicle = await this.prisma.shipmentVehicle.create({
         data: {
           shipmentId: id,
@@ -50,20 +68,34 @@ export class ShipmentsService {
     }
   }
 
-  async removeVehicle(id: string) {
+  async removeVehicle(id: string, vehicleId: string) {
     try {
-      const shipmentVehicle = await this.prisma.shipmentVehicle.delete({
-        where: { id },
+      return await this.prisma.shipmentVehicle.deleteMany({
+        where: {
+          shipmentId: id,
+          vehicleId: vehicleId,
+        },
       });
-
-      return shipmentVehicle;
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async findAll() {
-    return await this.prisma.shipment.findMany({
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const shipments = await this.prisma.shipment.findMany({
+      skip: isNaN(skip) ? 0 : skip,
+      take: isNaN(take) ? 5 : take,
       include: {
         driver: true,
         truck: true,
@@ -76,6 +108,15 @@ export class ShipmentsService {
         },
       },
     });
+    const total = await this.prisma.shipment.count();
+    const pages = Math.ceil(total / (take > 0 ? take : 5));
+    return {
+      data: shipments,
+      total: total,
+      pages: pages,
+      currentPage: page,
+      perPage: limit,
+    };
   }
 
   async findOne(id: string) {
@@ -103,6 +144,12 @@ export class ShipmentsService {
       const shipment = await this.prisma.shipment.update({
         where: { id },
         data: {
+          date_finalized: shipmentData.date_finalized
+            ? new Date(shipmentData.date_finalized)
+            : shipmentData.date_finalized,
+          date_initiated: shipmentData.date_initiated
+            ? new Date(shipmentData.date_initiated)
+            : shipmentData.date_finalized,
           ...shipmentData,
           driver: {
             connect: { id: driverId },

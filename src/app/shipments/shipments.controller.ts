@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -13,17 +14,15 @@ import {
   ApiResponse,
   ApiBody,
   ApiTags,
-  ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
 import { ShipmentsService } from './shipments.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Shipment } from './entities/shipment.entity';
 
-@Public()
 @ApiTags('shipments')
+@ApiBearerAuth()
 @Controller('shipments')
 export class ShipmentsController {
   constructor(private readonly shipmentsService: ShipmentsService) {}
@@ -73,8 +72,17 @@ export class ShipmentsController {
     description: 'The found records',
     type: Shipment,
   })
-  findAll() {
-    return this.shipmentsService.findAll();
+  async findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
+    return this.shipmentsService.findAll(+page, +limit);
   }
 
   @Get(':id')
@@ -119,8 +127,21 @@ export class ShipmentsController {
     return this.shipmentsService.remove(id);
   }
 
-  @Delete('vehicle/:id')
-  removeVehicle(@Param('id') id: string) {
-    return this.shipmentsService.removeVehicle(id);
+  @Delete(':id/vehicle/:vehicleId')
+  @ApiOperation({ summary: 'Delete vehicle to shipment' })
+  @ApiParam({
+    name: 'id',
+    description: "Shipment's Id",
+    required: true,
+    type: String,
+  })
+  @ApiParam({
+    name: 'vehicleId',
+    description: "Vehicle's Id",
+    required: true,
+    type: String,
+  })
+  deleteVehicle(@Param('id') id: string, @Param('vehicleId') vehicleId: string) {
+    return this.shipmentsService.removeVehicle(id, vehicleId);
   }
 }

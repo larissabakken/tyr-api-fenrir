@@ -20,10 +20,8 @@ import {
 import { DriversService } from './drivers.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Driver } from './entities/driver.entity';
 
-@Public() // This decorator is used to allow access to this controller without authentication
 @ApiTags('drivers')
 @Controller('drivers')
 export class DriversController {
@@ -58,7 +56,13 @@ export class DriversController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number, pages: number }>  {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const drivers = await this.driversService.findAll(+page, +limit);
     return drivers;
   }

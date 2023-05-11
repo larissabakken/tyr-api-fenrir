@@ -96,14 +96,17 @@ Table carts {
 
 Table vehicles {
   id String [pk]
+  license_plate String [unique, not null]
+  chassis String [unique]
+  renavam String [unique]
   description String
   status Status [not null, default: 'PENDING']
   price Float
   origin String [not null]
   destination String [not null]
-  license_plate String [unique, not null]
-  chassis String [unique]
-  renavam String [unique]
+  date_received DateTime
+  date_taken DateTime
+  date_delivered DateTime
   model String
   color String
   manufacturer String
@@ -120,6 +123,8 @@ Table shipments {
   id String [pk]
   origin String [not null]
   final_destination String [not null]
+  date_finalized DateTime
+  date_initiated DateTime
   status Status [not null, default: 'PENDING']
   total_cost Float
   description String

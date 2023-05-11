@@ -19,11 +19,10 @@ import {
 import { OwnersService } from './owners.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Owner } from './entities/owner.entity';
 
-@Public() // This decorator is used to allow access to this controller without authentication
 @ApiTags('owners')
+@ApiBearerAuth()
 @Controller('owners')
 export class OwnersController {
   constructor(private readonly ownersService: OwnersService) {}
@@ -48,7 +47,13 @@ export class OwnersController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const owners = await this.ownersService.findAll(+page, +limit);
     return owners;
   }

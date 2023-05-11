@@ -19,11 +19,10 @@ import {
 import { CartsService } from './carts.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { Public } from 'src/auth/public.decorator';
 import { Cart } from './entities/cart.entity';
 
-@Public()
 @ApiTags('carts')
+@ApiBearerAuth()
 @Controller('carts')
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
@@ -48,7 +47,13 @@ export class CartsController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
-  ): Promise<{ data: any[]; total: number; pages: number }> {
+  ): Promise<{
+    data: any[];
+    total: number;
+    pages: number;
+    currentPage: number;
+    perPage: number;
+  }> {
     const carts = await this.cartsService.findAll(+page, +limit);
     return carts;
   }

@@ -145,15 +145,18 @@ model Cart {
 }
 
 model Vehicle {
-  id            String  @id @default(uuid())
-  description   String?
-  status        Status  @default(PENDING)
-  price         Float?
-  origin        String
-  destination   String
-  license_plate String  @unique
-  chassis       String? @unique
-  renavam       String? @unique
+  id             String    @id @default(uuid())
+  license_plate  String    @unique
+  chassis        String?   @unique
+  renavam        String?   @unique
+  description    String?
+  status         Status    @default(PENDING)
+  price          Float?
+  origin         String
+  destination    String
+  date_received  DateTime?
+  date_taken     DateTime?
+  date_delivered DateTime?
 
   model               String?
   color               String?
@@ -172,10 +175,12 @@ model Vehicle {
 }
 
 model Shipment {
-  id                String  @id @default(uuid())
+  id                String    @id @default(uuid())
   origin            String
   final_destination String
-  status            Status  @default(PENDING)
+  date_finalized    DateTime?
+  date_initiated    DateTime?
+  status            Status    @default(PENDING)
   total_cost        Float?
   description       String?
 
