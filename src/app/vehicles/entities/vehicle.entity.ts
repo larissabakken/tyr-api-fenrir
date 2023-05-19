@@ -20,10 +20,13 @@ export class Vehicle {
   destination: string;
 
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z'})
-  date_initiated?: string | Date;
+  date_taken?: string | Date;
 
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
-  date_finalized?: string | Date;
+  date_received?: string | Date;
+
+  @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
+  date_delivered?: string | Date;
 
   @ApiProperty({ example: 'ELS112', required: true, uniqueItems: true })
   license_plate: string;

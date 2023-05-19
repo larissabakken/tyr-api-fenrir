@@ -21,10 +21,10 @@ export class CreateShipmentDto extends Shipment {
   final_destination: string;
 
   @IsOptional()
-  date_initiated?: string | Date;
+  date_finalized?: string | Date;
 
   @IsOptional()
-  date_finalized?: string | Date;
+  date_initiated?: string | Date;
 
   @IsOptional()
   status: Status;
